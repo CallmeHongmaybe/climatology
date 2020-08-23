@@ -1,0 +1,188 @@
+[
+    {
+        "sign": "Af", 
+        "meaning": "Tropical rainforest climate", 
+        "details": "All 12 months have an average precipitation of at least 60 mm (2.4 in). These climates usually occur within 10° latitude of the equator. This climate has no natural seasons in terms of thermal and moisture changes.", 
+        "examples": ["Singapore", "Davao, Philippines", "Kuala Lumpur, Malaysia"]
+    }, 
+    {
+        "sign": "Am", 
+        "meaning": "Tropical monsoon climate", 
+        "details": "This type of climate results from the monsoon winds which change direction according to the seasons.", 
+        "examples": ["Cairns, Queensland, Australia", "Jakarta, Indonesia", "Taitung, Taiwan"]
+    },
+    {
+        "sign": "Aw", 
+        "meaning": "Tropical savanna climate", 
+        "details": "Tropical climates that have a pronounced dry season.", 
+        "examples": ["Ho Chi Minh City, Vietnam", "Bangkok, Thailand", "Key West, Florida, United States"]
+    },
+    {
+        "sign": "As",
+        "meaning": "Tropical savanna climate with dry summer", 
+        "details": "Sometimes As is used in place of Aw if the dry season occurs during the time of higher sun and longer days (during summer).", 
+        "examples": ["Nha Trang, Vietnam", "Chennai, India"]
+    },
+    {
+        "sign": "BWh", 
+        "meaning": "Hot desert climate", 
+        "details": "Self-explanatory. Places with such climates are so dry that even rain gets evaporated before reaching the ground", 
+        "examples": ["Alice Springs, Australia", "United Arab Emirates", "Saudi Arabia"]
+    },
+    {
+        "sign": "BWk", 
+        "meaning": "Cold desert climate", 
+        "details": "Reverse to BWh except that it is still dry as hell",
+        "examples": ["Aral, Kazakhstan", "Damascus, Syria"]
+    },
+    {
+        "sign": "BSh", 
+        "meaning": "Hot semi-arid climate",
+        "details": "Half as dry as the desert but still very hot",  
+        "examples": ["Nicosia, Cyprus", "Tripoli, Libya"]
+    },
+    {
+        "sign": "BSk", 
+        "meaning": "Cold semi-arid climate", 
+        "details": "Half as dry as the desert but still very cold",
+        "examples": ["Zaragoza, Spain", "Sana'a, Yemen"]
+    }, 
+    {
+        "sign": "Cfa", 
+        "meaning": "Humid subtropical climate", 
+        "details": "Unlike the dry summer Mediterranean climates, humid subtropical climates have a warm and wet flow from the tropics that creates warm and moist conditions in the summer months.", 
+        "examples": ["Taipei, Taiwan", "Tokyo, Japan", "Brisbane, Australia"]
+    }, 
+    {
+        "sign": "Cfb", 
+        "meaning": "Temperate oceanic climate",
+        "details": "Cfb climates usually occur in the higher middle latitudes on the western sides of continents between the latitudes of 40° and 60°; they are typically situated immediately poleward of the Mediterranean climates, although in Australia and extreme southern Africa this climate is found immediately poleward of temperate climates, and at a somewhat lower latitude. ", 
+        "examples": ["Most of France and England", "Vancouver, Canada", "Melbourne, Australia"]
+    }, 
+    {
+        "sign": "Cfc", 
+        "meaning": "Subpolar oceanic climate", 
+        "details": "Subpolar oceanic climates (Cfc) occur poleward of or at higher elevations than the maritime temperate climates, and are mostly confined either to narrow coastal strips on the western poleward margins of the continents, or, especially in the Northern Hemisphere, to islands off such coasts.", 
+        "examples": ["Reykjavík, Iceland", "Bodø, Norway"]
+    }, 
+    {
+        "sign": "Cwa",
+        "meaning": "Monsoon-influenced humid subtropical climate", 
+        "details": "Cwa is monsoonal influenced, having the classic dry winter – wet summer pattern associated with tropical monsoonal climates.", 
+        "examples": ["Pretoria, South Africa", "Lusaka, Zambia"]
+    },
+    {
+        "sign": "Cwb", 
+        "meaning": "Subtropical highland climate", 
+        "details": "Dry-winter subtropical highland climate (Cwb) is a type of climate mainly found in highlands inside the tropics of Central America, South America, Africa and Asia or areas in the subtropics. Winters are noticeable and dry, and summers can be very rainy.", 
+        "examples": ["Da Lat, Vietnam", "Thimphu, Bhutan"]
+    },
+    {
+        "sign": "Cwc", 
+        "meaning": "Cold subtropical highland climate (rare)", 
+        "details": "Found located mainly above Cwb climates, it is found mainly in isolated locations mostly in the Andes in Bolivia, Peru and Argentina, as well as in sparse mountain locations in Southeast Asia. It is not common.", 
+        "examples": ["El Alto, Bolivia"]
+    }, 
+    {
+        "sign": "Csa", 
+        "meaning": "Hot-summer Mediterranean climate", 
+        "details": "Rainy in winter but very sunny in summer, also the temperature does not vary much year round", 
+        "examples": ["Tel Aviv, Israel", "Vatican City", "Los Angeles, California, US"] 
+    }, 
+    {
+        "sign": "Csb", 
+        "meaning": "Warm-summer Mediterranean climate", 
+        "details": "Same as Csa but summers are noticeably cooler", 
+        "examples": ["Porto, Portugal", "Cape Town, South Africa"]
+    },
+    {
+        "sign": "Csc", 
+        "meaning": "Cold-summer Mediterranean climate (rare )", 
+        "details": "Exists in high-elevation areas adjacent to coastal Csb climate areas, where the strong maritime influence prevents the average winter monthly temperature from dropping below 0 °C", 
+        "examples": ["Spirit Lake, Washington"]
+    }, 
+    {
+        "sign": "Dfa",
+        "meaning": "Hot-summer humid continental climate", 
+        "details": "Dfa climates usually occur in the high 30s and low 40s latitudes, with a qualifying average temperature in the warmest month of greater than 22 °C/72 °F.", 
+        "examples": ["Chicago, Illinois, United States", "Toronto, Canada"]
+    }, 
+    {
+        "sign": "Dfb",
+        "meaning": "Warm-summer humid continental climate", 
+        "details": "Dfb climates are immediately poleward of hot summer continental climates, generally in the high 40s and low 50s latitudes in North America and Asia, and also extending to higher latitudes in central and eastern Europe and Russia", 
+        "examples": ["Stockholm, Sweden", "Helsinki, Finland", "Oslo, Norway"]
+    },
+    {
+        "sign": "Dfc",
+        "meaning": "Cold-summer humid continental climate", 
+        "details": "Characterised by long, usually very cold winters, and short, cool to mild summers", 
+        "examples": ["Oulu, Finland", "Yellowknife, Canada"]
+    }, 
+    {
+        "sign": "Dfd", 
+        "meaning": "Extremely cold subarctic climate", 
+        "details": "Endemic to Siberia and remote parts of Alaska and Northern Canada. To get into the Dfd club winters must drop below -38ºC", 
+        "examples": ["Yakutsk, Russia", "Verkhoyansk, Russia"]
+    }, 
+    {
+        "sign": "Dwa",
+        "meaning": "Monsoon-influenced hot-summer humid continental climate", 
+        "details": "Self-explanatory. Winters are dry but summers are very, very wet due to monsoon",
+        "examples": ["Seoul, South Korea", "Beijing, China"]
+    },
+    {
+        "sign": "Dwb",
+        "meaning": "Monsoon-influenced warm-summer humid continental climate",
+        "details": "Self-explanatory. Winters are dry but summers are very, very wet due to monsoon",
+        "examples": ["Vladivostok, Russia", "Calgary, Canada"]
+    },
+    {
+        "sign": "Dwc",
+        "meaning": "Monsoon-influenced subarctic climate", 
+        "details": "Self-explanatory. Winters are dry but summers are very, very wet and cold.",
+        "examples": ["Chita, Russia", "Northernmost tip of China"]
+    }, 
+    {
+        "sign": "Dwd",
+        "meaning": "Monsoon-influenced extremely cold subarctic climate",
+        "details": "just google Oymyakon",
+        "examples": ["Oymyakon, Russia"] 
+    }, 
+    {
+        "sign": "Dsa", 
+        "meaning": "Mediterranean-influenced hot-summer humid continental climate", 
+        "details": "Dsa exists only at higher elevations adjacent to areas with hot summer Mediterranean (Csa) climates.", 
+        "examples": ["Salt Lake City, US", "Bishkek, Kyrgyzstan"]
+    }, 
+    {
+        "sign": "Dsb", 
+        "meaning": "Mediterranean-influenced warm-summer humid continental climate", 
+        "details": "Dsb arises from the same scenario as Dsa, but at even higher altitudes or latitudes, and chiefly in North America, since the Mediterranean climates extend further poleward than in Eurasia.", 
+        "examples": ["South Lake Tahoe, California, US"]
+    },
+    {
+        "sign": "Dsc", 
+        "meaning": "Mediterranean-influenced subarctic climate", 
+        "details": "Winters are long and very cold; summers are cool and short. The climate is dry year round", 
+        "examples": ["Whitehorse, Canada", "Anchorage, Alaska, United States"]
+    },  
+    {
+        "sign": "Dsd", 
+        "meaning": "Mediterranean-influenced extremely cold subarctic climate", 
+        "details": "No explanations for this yet.", 
+        "examples": ["No places with such climate"]
+    }, 
+    {
+        "sign": "ET", 
+        "meaning": "Tundra climate", 
+        "details": "No explanations for this yet.",
+        "examples": ["Ellesmere Islands, Canada"]
+    }, 
+    {
+        "sign": "EF", 
+        "meaning": "Ice cap climate ( eternal winter )", 
+        "details": "Even the hottest summer stays below 0ºC.", 
+        "examples": ["Most of Greenland and Antarctica"]
+    }
+]
