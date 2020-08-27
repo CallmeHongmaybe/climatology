@@ -1,7 +1,6 @@
 const weatherData = require('../../library/ghcnm.json')
 const fetch = require('isomorphic-fetch')
 
-
 // // https://zellwk.com/blog/async-await-in-loops/
 
 const getShuffledArr = arr => {
@@ -17,34 +16,40 @@ async function getPlaceName(lat, lon, country) {
     const getPlaceName = await fetch(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=en&featureTypes=&location=${lon}%2C${lat}`);
 
     const placeName = await getPlaceName.json()
-    return (placeName.error.code ? `${lat} ${lon}, ${country}` : `${placeName.address.City}, ${country}`);
+    return (!placeName.error ? `${placeName.address.City !== '' ? placeName.address.City + ", " : 
+     ""} ${placeName.address.Region !== '' ? placeName.address.Region + ", " : ""}${country}` : country);
 }
 
-const fetchClimateData = (countries, tempRange, months, limit) => countries.map(country =>
-    weatherData.filter(element =>
-        element.Country === country
-    )
-).map(group => { // []
-    return getShuffledArr(group).slice(0, limit).map((country) => { // [[]]
+const fetchClimateData = (countries, tempRange, months, limit) => {
 
-        const { Latitude, Longitude, Country } = country
+    const [minTemp, maxTemp] = tempRange
 
-        return months.map(month => {  // [[[]]]
-            if (country[month] >= tempRange[0] && country[month] <= tempRange[1]) {
-                return {
-                    Country,
-                    [month]: `${(parseFloat(country[month]) / 100).toString()}ºC`,
-                    Latitude,
-                    Longitude,
+    return countries.map(country =>
+        weatherData.filter(element =>
+            element.Country === country
+        )
+    ).map(group => { // []
+        return getShuffledArr(group).slice(0, limit).map((country) => { // [[]]
+    
+            const { Latitude, Longitude, Country } = country
+    
+            return months.map(month => {  // [[[]]]
+                if (country[month] >= minTemp && country[month] <= maxTemp) {
+                    return {
+                        Country,
+                        [month]: `${(parseFloat(country[month]) / 100).toString()}ºC`,
+                        Latitude,
+                        Longitude,
+                    }
                 }
-            }
+            })
         })
-    })
-}).reduce((arr, val) =>
-    arr.concat(...val), []
-).filter(element => typeof element !== 'undefined')
+    }).reduce((arr, val) =>
+        arr.concat(...val), []
+    ).filter(element => typeof element !== 'undefined')
+}
 
-const splittedItems = item => item.replace(/\s/g, '').split(',')
+const splittedItems = item => item.split(',')
 
 export default async (req, res) => {
     const { query: {

@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import ReactMapGL, { GeolocateControl, FlyToInterpolator } from 'react-map-gl';
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
 
 const MAP_TOKEN = "pk.eyJ1Ijoic2ltbWVyMyIsImEiOiJjang3Y2hlNGQwMGFjM3BsZ3JpM3huMWkzIn0.UHF1wCqQluK2hNoNM5d1jA"
-// const ACTIONS = {
-//   FETCHWEATHER,
-//   GET_CLIMATE_INFO
-// }
+
 function convertCoordToDegrees(coordValue) {
   var minuteVal = coordValue % 1;
   minuteVal *= 60;
@@ -17,13 +14,29 @@ function convertCoordToDegrees(coordValue) {
   return `${Math.floor(Math.abs(coordValue))}º ${Math.floor(Math.abs(minuteVal))}' ${Math.abs(secondVal.toFixed(2))}''`
 }
 
-export default function Map() {
+// question: How can I allow the user to move around the map while enabling them to navigate to a specific location 
+
+export default function Map({ city }) {
+
+  const { lat, lon } = JSON.parse(city)
+
   const [viewport, setViewport] = useState({
-    latitude: -33.87,
-    longitude: 151,
+    latitude: parseFloat(lat),
+    longitude: parseFloat(lon),
     zoom: 9,
-    transitionDuration: 3000,
+    transitionDuration: 3000
   });
+
+  useMemo(() => {
+    setViewport({
+      latitude: parseFloat(lat),
+      longitude: parseFloat(lon),
+      zoom: 12,
+      transitionDuration: 3000, 
+      transitionInterpolator: new FlyToInterpolator()
+    })
+  }, [lat, lon])
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh' }}>
@@ -37,8 +50,7 @@ export default function Map() {
         mapStyle="mapbox://styles/mapbox/streets-v11"
         {...viewport}
         onViewportChange={nextViewport => setViewport({
-          ...nextViewport,
-          transitionInterpolator: new FlyToInterpolator(),
+          ...nextViewport
         })}
         style={{ position: 'relative' }}
       >
@@ -48,7 +60,7 @@ export default function Map() {
           label="Track your location"
           style={{ width: 'fit-content', height: 'fit-content', position: 'absolute', right: 0, padding: 2, marginRight: 1 }}
         />
-        <div style={{ left: 0, bottom: 0, background: "rgba(0,0,0, 0.4)", color: 'white', padding: 2, width: '25%' }}>
+        <div style={{ left: 0, bottom: 0, background: "rgba(0,0,0, 0.4)", color: 'white', padding: 2, width: '25%', wordSpacing: 1.1 }}>
           <Typography variant="body1">
             Latitude: {parseFloat(viewport.latitude) > 0 ? "N" : "S"}{convertCoordToDegrees(viewport.latitude)} <br />
             Longitude: {parseFloat(viewport.longitude) > 0 ? "E" : "W"}{convertCoordToDegrees(viewport.longitude)} <br />

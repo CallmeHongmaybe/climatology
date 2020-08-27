@@ -1,5 +1,5 @@
 import { Grid, TextField, MenuItem } from '@material-ui/core';
-import {Range} from 'rc-slider'
+import {Range} from 'rc-slider' // https://material-ui.com/components/slider/
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
