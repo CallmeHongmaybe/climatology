@@ -1,5 +1,5 @@
 const weatherData = require('../../library/ghcnm.json')
-const fetch = require('isomorphic-fetch')
+// const fetch = require('isomorphic-fetch')
 
 // // https://zellwk.com/blog/async-await-in-loops/
 
@@ -11,14 +11,6 @@ const getShuffledArr = arr => {
     }
     return newArr
 };
-
-async function getPlaceName(lat, lon, country) {
-    const getPlaceName = await fetch(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=en&featureTypes=&location=${lon}%2C${lat}`);
-
-    const placeName = await getPlaceName.json()
-    return (!placeName.error ? `${placeName.address.City !== '' ? placeName.address.City + ", " : 
-     ""} ${placeName.address.Region !== '' ? placeName.address.Region + ", " : ""}${country}` : country);
-}
 
 const fetchClimateData = (countries, tempRange, months, limit) => {
 
@@ -64,16 +56,9 @@ export default async (req, res) => {
         splittedItems(tempRange).map(variable => parseFloat(variable) * 100),
         splittedItems(months),
         parseInt(limit)
-    ).map(async result => {
-        const {Latitude, Longitude, Country} = result 
-        const location = await getPlaceName(Latitude, Longitude, Country)
-        return {
-            ...result,
-            location
-        }
-    })
+    )
 
-    res.json(await Promise.all(AllResults))
+    res.json(AllResults)
     res.end()
 }
 

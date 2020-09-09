@@ -14,28 +14,26 @@ const NoSSRMap = dynamic(() => import('../components/Map'), {
 });
 
 export const ACTIONS = {
-    GET_CITY_INFO: "getCityInfo"
+    GET_CITY_INFO: "getCityInfo",
+    UPDATE_INFO: 'updateName'
 }
 
 function reducer(city, { type, payload }) {
     switch (type) {
         case ACTIONS.GET_CITY_INFO:
             return {
-                country: payload.country, 
-                name: payload.name, 
-                lat: payload.lat,
-                lon: payload.lon,
+                ...payload
             }
-        default: return city;
+        default: return city
     }
 }
 
 export default function App() {
-    const [city, dispatch] = useReducer(reducer, { 
-        country: "AU", 
-        name: "Sydney", 
-        lat: -33.87, 
-        lon: 151 
+    const [city, dispatch] = useReducer(reducer, {
+        country: "AU",
+        name: "Sydney",
+        lat: -33.87,
+        lon: 151
     })
 
     return (
@@ -44,10 +42,10 @@ export default function App() {
                 <title>Find dem climates</title>
             </Head>
             <div style={{ width: '40vw' }}>
-                <SearchBar dispatch={dispatch}/>
+                <SearchBar dispatch={dispatch} />
                 <CityInfo {...city}/>
             </div>
-            <NoSSRMap city={JSON.stringify(city)} />
+            <NoSSRMap city={JSON.stringify(city)} dispatch={dispatch}/>
         </div>
     )
 }

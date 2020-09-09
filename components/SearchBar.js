@@ -65,12 +65,12 @@ export default function SearchBar({ dispatch }) {
                             key={index}
                             onClick={
                                 () => dispatch({
-                                    type: ACTIONS.GET_CITY_INFO, payload: {
+                                    type: ACTIONS.GET_CITY_INFO, 
+                                    payload: {
                                         name: city.name,
                                         country: city.country,
                                         lat: city.lat,
-                                        lon: city.lng,
-                                        zoom: 12
+                                        lon: city.lng
                                     }
                                 })
                             }

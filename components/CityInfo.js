@@ -1,7 +1,8 @@
-import useSWR from 'swr'
 import ExploreIcon from '@material-ui/icons/Explore'
-import { Typography, Paper, Tabs, Tab, makeStyles } from '@material-ui/core'
-import { useState } from 'react'
+import { Typography, Paper, Tabs, Tab, makeStyles, ButtonGroup, Button } from '@material-ui/core'
+import { useState, useRef, useEffect } from 'react'
+import equal from 'fast-deep-equal';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,19 +18,39 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexFlow: 'row',
         fontWeight: '700',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    sunTime: { display: 'flex', justifyContent: 'space-between', padding: 3 },
+    prompt: { fontSize: 20, textAlign: 'center' },
+    buttonStyle: (ref, value) => {
+        if (ref !== value) return "secondary"
+        else return "primary"
     }
 }));
+
+const TABS = {
+    CLIMATE: 'Climate',
+    AVERAGES: 'Monthly averages',
+    BASIC_WEATHER: 'Basic forecast',
+}
+
+const UNITS = {
+    METRIC: 'ºC',
+    IMPERIAL: 'ºF',
+    KELVIN: 'ºK'
+}
 
 const apiRoot = 'https://api.openweathermap.org/data/2.5/weather';
 const apiKey = process.env.API_KEY;
 const units = '&units=metric';
 
-export default function CityInfo({ country, name }) {
+export default function CityInfo({ country, name, lat, lon }) {
+
+    console.log("CityInfo rendered")
+
     const [value, setValue] = useState();
 
     const handleChange = (e, newValue) => {
-        console.log(`e.target.value = ${e.target.value}`)
         setValue(newValue);
     };
 
@@ -38,7 +59,7 @@ export default function CityInfo({ country, name }) {
     return (
         <>
             {/* add the tabs here - https://material-ui.com/components/tabs/#centered */}
-            <div className={classes.paper}>
+            <div align="center" className={classes.paper}>
                 <Typography gutterBottom variant="h4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ExploreIcon color="secondary" fontSize="inherit" />
                     {name}, {country}
@@ -51,18 +72,16 @@ export default function CityInfo({ country, name }) {
                         textColor="primary"
                         indicatorColor="secondary"
                     >
-                        <Tab label="Climate" value="Climate" />
-                        <Tab label="Averages" value="Averages" />
-                        <Tab label="Basic infos" value="Basic infos" defaultChecked />
+                        <Tab label={TABS.CLIMATE} value={TABS.CLIMATE} defaultChecked={true} />
+                        <Tab label={TABS.AVERAGES} value={TABS.AVERAGES} />
+                        <Tab label={TABS.BASIC_WEATHER} value={TABS.BASIC_WEATHER} />
                     </Tabs>
                 </Paper>
-                <InfoPaper option={value} name={name} country={country} />
+                {InfoPaper(value, country, name, lat, lon)}
             </div>
         </>
     )
 }
-
-const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 function turnUnixToTime(unixTime, timezone) {
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -75,63 +94,101 @@ function turnUnixToTime(unixTime, timezone) {
     return hours + ':' + minutes.substr(-2)
 }
 
-function InfoPaper({ option, country, name }) {
-    const classes = useStyles()
-    const { data, error } = useSWR(`${apiRoot}?q=${name},${country}${apiKey}${units}`, fetcher)
-
+function InfoPaper(option, country, name, lat, lon) {
     switch (option) {
-        case "Basic infos":
-            if (!data) return <Typography align="center" color="primary" variant='body1'>Fetching data...</Typography>
-            else if (data) {
-                const {
-                    main: { temp, feels_like, temp_min, temp_max },
-                    weather: [{ main, description, icon }],
-                    sys: {sunrise, sunset}, 
-                    timezone
-                } = data;
-
-                return (
-                    <>
-                        <Paper>
-                            <Typography align="center" color="primary" variant='body1' className={classes.weatherBoard}>
-                                <div style={{ flexGrow: 2 }}>
-                                    <p style={{ fontSize: '30px', transform: 'scale(1.8)' }}>{Math.floor(temp)}º</p>
-                                    <p style={{ fontSize: '20px' }}>{main}</p>
-                                </div>
-                                <div style={{ flexGrow: 1 }}>
-                                </div>
-                                <div style={{ flexGrow: 2 }}>
-                                    <img src={"http://openweathermap.org/img/w/" + icon + ".png"} style={{ transform: 'scale(1.1)' }} />
-                                    <p>Feels like {Math.floor(feels_like)}º</p>
-                                    <p>{Math.floor(parseFloat(temp_min))} / {Math.floor(parseFloat(temp_max))}º</p>
-                                </div>
-                            </Typography>
-
-
-                        </Paper>
-                        <Typography>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: 3 }}>
-                                <p>Sunrise: </p>
-                                <p>{turnUnixToTime(sunrise, timezone)}</p>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: 3 }}>
-                                <p>Sunset: </p>
-                                <p>{turnUnixToTime(sunset, timezone)}</p>
-                            </div>
-                        </Typography>
-                    </>
-                )
-            }
-            else {
-                return <Typography align="center" color="primary" variant='body1'>There seems to be an error. {error}</Typography>
-            }
+        case TABS.BASIC_WEATHER: return <WeatherInfo lat={lat} lon={lon} />
         default: return <div>This is the {option} tab </div>;
     }
 }
 
+function WeatherInfo({ lat, lon }) {
 
+    const classes = useStyles()
 
-/* <Typography>
-Temp: {!isValidating ? data.main.temp : ""} <br />
-Feels like: {!isValidating ? data.main.feels_like : ""}
-</Typography> */
+    const [data, setData] = useState({
+        content: null,
+        isLoading: false
+    })
+
+    const [unit, setUnit] = useState(UNITS.METRIC)
+
+    const prevUnit = useRef(unit)
+
+    const convertTemp = value => {
+        switch(unit) {
+            case UNITS.METRIC: return Math.floor(value)
+            case UNITS.IMPERIAL: return Math.floor((value * 9 / 5) + 32)
+            case UNITS.KELVIN: return Math.floor(value + 273.15)
+        }
+    }
+
+    const handleChange = chosenUnit => {
+        prevUnit.current = unit
+        setUnit(chosenUnit)
+    }
+
+    useEffect(() => {
+        setData({ isLoading: true })
+        fetch(`${apiRoot}?lat=${lat}&lon=${lon}${apiKey}${units}`)
+            .then(res => res.json())
+            .then(res => setData({ content: res, isLoading: false }))
+            .finally(() => console.log("api called"))
+            .catch(error => {
+                throw new Error("API sucked. Reason " + error)
+            })
+    }, [lat, lon])
+
+    if (data.content) {
+        const {
+            content: {
+                main: { temp, feels_like, temp_min, temp_max },
+                weather: [{ description, icon }],
+                sys: { sunrise, sunset },
+                timezone
+            }
+        } = data;
+
+        return (
+            <>
+                <Paper>
+                    <div className={classes.weatherBoard}>
+                        <div style={{ flexGrow: 2 }}>
+                            <p style={{ fontSize: '30px', transform: 'scale(1.8)' }}>{convertTemp(temp)}º</p>
+                            <p style={{ fontSize: '20px' }}>{description.toUpperCase()}</p>
+                        </div>
+                        <div style={{ flexGrow: 1 }}>
+                        </div>
+                        <div style={{ flexGrow: 2 }}>
+                            <img src={"http://openweathermap.org/img/w/" + icon + ".png"} style={{ transform: 'scale(1.1)' }} />
+                            <p>Feels like {convertTemp(feels_like)}º</p>
+                            <p>{convertTemp(temp_min)} / {convertTemp(temp_max)}º</p>
+                        </div>
+                    </div>
+                </Paper>
+
+                <div>
+                    <div className={classes.sunTime}>
+                        <p>Sunrise: </p>
+                        <p>{turnUnixToTime(sunrise, timezone)}</p>
+                    </div>
+                    <div className={classes.sunTime}>
+                        <p>Sunset: </p>
+                        <p>{turnUnixToTime(sunset, timezone)}</p>
+                    </div>
+
+                    <ButtonGroup variant="text" color="primary" aria-label="contained primary button group" fullWidth={true} >
+                        <Button onClick={() => handleChange(UNITS.KELVIN)}>{UNITS.KELVIN}</Button>
+                        <Button onClick={() => handleChange(UNITS.IMPERIAL)}>{UNITS.IMPERIAL}</Button>
+                        <Button onClick={() => handleChange(UNITS.METRIC)}>{UNITS.METRIC}</Button>
+                    </ButtonGroup>
+                </div>
+            </>
+        )
+    }
+    else if (data.isLoading) return (
+        <p className={classes.prompt}>...Loading</p>
+    )
+    else return (
+        <p className={classes.prompt}>There might have been something wrong</p>
+    )
+}
