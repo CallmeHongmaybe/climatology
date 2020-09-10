@@ -1,8 +1,6 @@
 import ExploreIcon from '@material-ui/icons/Explore'
 import { Typography, Paper, Tabs, Tab, makeStyles, ButtonGroup, Button } from '@material-ui/core'
-import { useState, useRef, useEffect } from 'react'
-import equal from 'fast-deep-equal';
-
+import { useState, useEffect, useRef } from 'react'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,14 +16,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexFlow: 'row',
         fontWeight: '700',
-        alignItems: 'center',
+        color: 'blue'
     },
     sunTime: { display: 'flex', justifyContent: 'space-between', padding: 3 },
     prompt: { fontSize: 20, textAlign: 'center' },
-    buttonStyle: (ref, value) => {
-        if (ref !== value) return "secondary"
-        else return "primary"
-    }
 }));
 
 const TABS = {
@@ -48,9 +42,10 @@ export default function CityInfo({ country, name, lat, lon }) {
 
     console.log("CityInfo rendered")
 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(TABS.CLIMATE);
 
     const handleChange = (e, newValue) => {
+        e.preventDefault()
         setValue(newValue);
     };
 
@@ -72,9 +67,11 @@ export default function CityInfo({ country, name, lat, lon }) {
                         textColor="primary"
                         indicatorColor="secondary"
                     >
-                        <Tab label={TABS.CLIMATE} value={TABS.CLIMATE} defaultChecked={true} />
-                        <Tab label={TABS.AVERAGES} value={TABS.AVERAGES} />
-                        <Tab label={TABS.BASIC_WEATHER} value={TABS.BASIC_WEATHER} />
+                        {
+                            Object.keys(TABS).map((unit) => {
+                                return <Tab key={unit} label={TABS[unit]} value={TABS[unit]} />
+                            })
+                        }
                     </Tabs>
                 </Paper>
                 {InfoPaper(value, country, name, lat, lon)}
@@ -110,21 +107,16 @@ function WeatherInfo({ lat, lon }) {
         isLoading: false
     })
 
-    const [unit, setUnit] = useState(UNITS.METRIC)
+    // const buttonRefs = useRef([])
 
-    const prevUnit = useRef(unit)
+    const [tempUnit, setUnit] = useState(UNITS.METRIC)
 
     const convertTemp = value => {
-        switch(unit) {
+        switch (tempUnit) {
             case UNITS.METRIC: return Math.floor(value)
             case UNITS.IMPERIAL: return Math.floor((value * 9 / 5) + 32)
             case UNITS.KELVIN: return Math.floor(value + 273.15)
         }
-    }
-
-    const handleChange = chosenUnit => {
-        prevUnit.current = unit
-        setUnit(chosenUnit)
     }
 
     useEffect(() => {
@@ -156,8 +148,7 @@ function WeatherInfo({ lat, lon }) {
                             <p style={{ fontSize: '30px', transform: 'scale(1.8)' }}>{convertTemp(temp)}º</p>
                             <p style={{ fontSize: '20px' }}>{description.toUpperCase()}</p>
                         </div>
-                        <div style={{ flexGrow: 1 }}>
-                        </div>
+                        <div style={{ flexGrow: 1 }}></div>
                         <div style={{ flexGrow: 2 }}>
                             <img src={"http://openweathermap.org/img/w/" + icon + ".png"} style={{ transform: 'scale(1.1)' }} />
                             <p>Feels like {convertTemp(feels_like)}º</p>
@@ -176,10 +167,18 @@ function WeatherInfo({ lat, lon }) {
                         <p>{turnUnixToTime(sunset, timezone)}</p>
                     </div>
 
-                    <ButtonGroup variant="text" color="primary" aria-label="contained primary button group" fullWidth={true} >
-                        <Button onClick={() => handleChange(UNITS.KELVIN)}>{UNITS.KELVIN}</Button>
-                        <Button onClick={() => handleChange(UNITS.IMPERIAL)}>{UNITS.IMPERIAL}</Button>
-                        <Button onClick={() => handleChange(UNITS.METRIC)}>{UNITS.METRIC}</Button>
+                    <ButtonGroup variant="text" color="primary" fullWidth={true} >
+                        {
+                            Object.keys(UNITS).map((unit) => {
+                                return <Button 
+                                key={unit}
+                                onClick={() => setUnit(UNITS[unit])}
+                                color={(tempUnit === UNITS[unit]) ? 'secondary' : 'primary'}
+                                >
+                                    {UNITS[unit]}
+                                </Button>
+                            })
+                        }
                     </ButtonGroup>
                 </div>
             </>
