@@ -21,9 +21,7 @@ export const ACTIONS = {
 function reducer(city, { type, payload }) {
     switch (type) {
         case ACTIONS.GET_CITY_INFO:
-            return {
-                ...payload
-            }
+            return { ...payload }
         default: return city
     }
 }

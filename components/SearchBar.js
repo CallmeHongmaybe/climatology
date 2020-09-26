@@ -3,7 +3,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react'
 import { ACTIONS } from '../pages/find-climates'
 import { makeStyles } from '@material-ui/core'
-import cities from 'cities.json'
 import Drawaa from './Drawaa'
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +29,7 @@ export default function SearchBar({ dispatch }) {
 
     const getCities = async (e) => {
         e.target.value
-            ? setSuggested(cities.filter(el => el.name.includes(e.target.value)).slice(0, 4))
+            ? fetch(`../api/autocomplete?keyword=${e.target.value}`).then(res => res.json()).then(res => setSuggested(res)) 
             : setSuggested([])
     }
 
