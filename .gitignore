@@ -37,5 +37,7 @@ yarn-error.log*
 /.vscode/ 
 /climate/KG_1986-2010.* 
 /climate/__pycache__
+/climate/csvs
+/climate/spatial data
 
 

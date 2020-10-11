@@ -12,32 +12,28 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Weather Advisor
+          Welcome to Weather Advisor!
         </h1>
+        
+        <h2>The go-to app for climate stuff across the world</h2>
 
         <div className={styles.grid}>
-          <Link href="/climate">
+          <Link href="/app">
             <a className={styles.card}>
-              <h3>Know thy climates &rarr;</h3>
-              <p>Play with the sliders</p>
+              <h3>Find a location &rarr;</h3>
+              <p>If you already have a vacation spot or a city in mind, I would recommend using this tool. You can find climate info for any location in the search bar</p>
             </a>
           </Link>
 
-          <Link href="/find-climates">
-            <a className={styles.card}>
-              <h3>Find thy climates &rarr;</h3>
-              <p>Look for all cities with similar weather patterns</p>
-            </a>
-          </Link>
-
-          <Link href="/map">
+          <Link href="/climate-extremes">
             <a
               className={styles.card}
             >
-              <h3>See map layers &rarr;</h3>
-              <p>Discover different layers gathered from our data</p>
+              <h3>Climate extremes &rarr;</h3>
+              <p>A curated list of climate outliers observed around the world.</p>
             </a>
           </Link>
+
         </div>
       </main>
 

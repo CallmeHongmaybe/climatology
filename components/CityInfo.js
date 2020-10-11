@@ -1,26 +1,10 @@
 import ExploreIcon from '@material-ui/icons/Explore'
-import { Typography, Paper, Tabs, Tab, makeStyles, ButtonGroup, Button } from '@material-ui/core'
-import { useState, useEffect, useRef } from 'react'
+import { Typography, Paper, Tabs, Tab, ButtonGroup, Button } from '@material-ui/core'
+import { useState, useEffect, useContext } from 'react'
+import { useStyles } from './Styles'
+import MonthAvgGraph from './Graph'
+import { ACTIONS, InfoContext } from '../pages/app'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 2,
-        backgroundColor: theme.palette.common.white,
-        color: 'white',
-    },
-    paper: {
-        display: 'flex', justifyContent: 'center', flexFlow: 'column',
-        margin: theme.spacing(4)
-    },
-    weatherBoard: {
-        display: 'flex',
-        flexFlow: 'row',
-        fontWeight: '700',
-        color: 'blue'
-    },
-    sunTime: { display: 'flex', justifyContent: 'space-between', padding: 3 },
-    prompt: { fontSize: 20, textAlign: 'center' },
-}));
 
 const TABS = {
     CLIMATE: 'Climate',
@@ -38,7 +22,7 @@ const apiRoot = 'https://api.openweathermap.org/data/2.5/weather';
 const apiKey = process.env.API_KEY;
 const units = '&units=metric';
 
-export default function CityInfo({ country, name, lat, lon }) {
+function CityInfo({ country, name, lat, lng }) {
 
     console.log("CityInfo rendered")
 
@@ -53,7 +37,6 @@ export default function CityInfo({ country, name, lat, lon }) {
 
     return (
         <>
-            {/* add the tabs here - https://material-ui.com/components/tabs/#centered */}
             <div align="center" className={classes.paper}>
                 <Typography gutterBottom variant="h4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ExploreIcon color="secondary" fontSize="inherit" />
@@ -66,6 +49,7 @@ export default function CityInfo({ country, name, lat, lon }) {
                         variant="fullWidth"
                         textColor="primary"
                         indicatorColor="secondary"
+                        scrollButtons="auto"
                     >
                         {
                             Object.keys(TABS).map((unit) => {
@@ -74,7 +58,7 @@ export default function CityInfo({ country, name, lat, lon }) {
                         }
                     </Tabs>
                 </Paper>
-                {InfoPaper(value, country, name, lat, lon)}
+                {InfoPaper(value, country, name, lat, lng)}
             </div>
         </>
     )
@@ -91,24 +75,31 @@ function turnUnixToTime(unixTime, timezone) {
     return hours + ':' + minutes.substr(-2)
 }
 
-function InfoPaper(option, country, name, lat, lon) {
+// use Redis to cache api results 
+
+function InfoPaper(option, country, name, lat, lng) {
+
     switch (option) {
-        case TABS.BASIC_WEATHER: return <WeatherInfo lat={lat} lon={lon} />
-        default: return <div>This is the {option} tab </div>;
+        case TABS.BASIC_WEATHER: return <WeatherInfo lat={lat} lng={lng} />
+        case TABS.AVERAGES: return <MonthAvgGraph country={country} name={name} lat={lat} lng={lng} />
+        default: return <div> Koppen-Geiger classification: sth</div>;
     }
+
 }
 
-function WeatherInfo({ lat, lon }) {
+// use Redis or just simply useReducer to cache api results 
 
-    const classes = useStyles()
+function WeatherInfo({ lat, lng }) {
+    // useContext goes here
+
+    const { city, dispatch } = useContext(InfoContext)
 
     const [data, setData] = useState({
         content: null,
-        isLoading: false
+        isLoading: true
     })
 
-    // const buttonRefs = useRef([])
-
+    const classes = useStyles()
     const [tempUnit, setUnit] = useState(UNITS.METRIC)
 
     const convertTemp = value => {
@@ -121,24 +112,34 @@ function WeatherInfo({ lat, lon }) {
 
     useEffect(() => {
         setData({ isLoading: true })
-        fetch(`${apiRoot}?lat=${lat}&lon=${lon}${apiKey}${units}`)
-            .then(res => res.json())
-            .then(res => setData({ content: res, isLoading: false }))
-            .finally(() => console.log("api called"))
-            .catch(error => {
-                throw new Error("API sucked. Reason " + error)
-            })
-    }, [lat, lon])
+        if (city.forecast) {
+            setData({ content: city.forecast, isLoading: false })
+            console.log("Forecast cache used")
+        }
+        else {
+            fetch(`${apiRoot}?lat=${lat}&lon=${lng}${apiKey}${units}`)
+                .then(res => res.json())
+                .then(res => {
+                    setData({ content: res, isLoading: false })
+                    dispatch({
+                        type: ACTIONS.UPDATE_FORECAST,
+                        payload: res
+                    })
+                })
+                .finally(() => console.log("api called"))
+                .catch(error => {
+                    throw new Error("API sucked. Reason " + error)
+                })
+        }
+    }, [lat, lng])
 
-    if (data.content) {
+    if (!data.isLoading) {
         const {
-            content: {
-                main: { temp, feels_like, temp_min, temp_max },
-                weather: [{ description, icon }],
-                sys: { sunrise, sunset },
-                timezone
-            }
-        } = data;
+            main: { temp, feels_like, temp_min, temp_max },
+            weather: [{ description, icon }],
+            sys: { sunrise, sunset },
+            timezone
+        } = data.content;
 
         return (
             <>
@@ -170,10 +171,10 @@ function WeatherInfo({ lat, lon }) {
                     <ButtonGroup variant="text" color="primary" fullWidth={true} >
                         {
                             Object.keys(UNITS).map((unit) => {
-                                return <Button 
-                                key={unit}
-                                onClick={() => setUnit(UNITS[unit])}
-                                color={(tempUnit === UNITS[unit]) ? 'secondary' : 'primary'}
+                                return <Button
+                                    key={unit}
+                                    onClick={() => setUnit(UNITS[unit])}
+                                    color={(tempUnit === UNITS[unit]) ? 'secondary' : 'primary'}
                                 >
                                     {UNITS[unit]}
                                 </Button>
@@ -191,3 +192,10 @@ function WeatherInfo({ lat, lon }) {
         <p className={classes.prompt}>There might have been something wrong</p>
     )
 }
+
+export default CityInfo
+
+
+
+// make use of useReducer and https://reactjs.org/docs/context.html to store data because without it every time you click on a tab it keeps making API calls. 
+// after you finish the component, make sure to test the live database not the local one. 
