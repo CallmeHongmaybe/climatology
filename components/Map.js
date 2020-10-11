@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMapGL, {
   GeolocateControl,
   NavigationControl,
-  LinearInterpolator,
+  FlyToInterpolator
 } from 'react-map-gl';
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
@@ -42,7 +42,7 @@ export default function Map({ lat, lng, dispatch }) {
     longitude: parseFloat(lng),
     zoom: 9,
     transitionDuration: 3000,
-    transitionInterpolator: new LinearInterpolator()
+    transitionInterpolator: new FlyToInterpolator()
   }
 
   const [viewport, setViewport] = useState(viewState);
