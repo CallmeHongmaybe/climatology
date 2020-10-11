@@ -43,18 +43,18 @@ print(shapefile.sample(n=5))
 
 
 with open('climate/csvs/new_file.txt', 'w', newline="\n") as file:
-    """
-    1. get row and turn it to a list
-    2. append the list with the climate notation 
-    3. write it to a new csv file    
-    """
-    csvWriter = csv.writer(file)
-    csvWriter.writerow(['country', 'name', 'lat', 'lng', 'climate'])
-    for index, place in climate_df.iterrows():
-        getKG = getClimate(place['lng'], place['lat'])
-        new_row = place.tolist() + [getKG]
-        csvWriter.writerow(new_row)
-    print("Finished :))")
+     """
+     1. get row and turn it to a list
+     2. append the list with the climate notation 
+     3. write it to a new csv file    
+     """
+     csvWriter = csv.writer(file)
+     csvWriter.writerow(['country', 'name', 'lat', 'lng', 'climate'])
+     for index, place in climate_df.sample(n=3).iterrows():  # take out sample(n=3) if we were to write a whole file fr 
+         getKG = getClimate(place['lng'], place['lat'])
+         new_row = place.tolist() + [getKG]
+         csvWriter.writerow(new_row)
+         print("Finished :))")
 
 """
 
