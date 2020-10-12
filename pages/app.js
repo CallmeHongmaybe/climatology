@@ -17,7 +17,7 @@ const NoSSRMap = dynamic(() => import('../components/Map'), {
 export const ACTIONS = {
     GET_CITY_INFO: "getCityInfo",
     UPDATE_FORECAST: "UpdateForecast",
-    UPDATE_CLIMATE: "UpdateClimate"
+    UPDATE_CLIMATE: "UpdateClimate",
 }
 
 function reducer(info, { type, payload }) {
@@ -43,7 +43,7 @@ export default function App() {
         lng: 151.20732,
         climate: null,
         averages: null,
-        forecast: null
+        forecast: null,
     })
 
     const memoizedValues = useMemo(() => {

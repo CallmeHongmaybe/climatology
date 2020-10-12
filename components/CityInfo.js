@@ -12,7 +12,7 @@ const TABS = {
     BASIC_WEATHER: 'Basic forecast',
 }
 
-const UNITS = {
+export const UNITS = {
     METRIC: 'ºC',
     IMPERIAL: 'ºF',
     KELVIN: 'ºK'
@@ -87,6 +87,14 @@ function InfoPaper(option, country, name, lat, lng) {
 
 }
 
+export const convertTemp = (value, unit) => {
+    switch (unit) {
+        case UNITS.METRIC: return Math.floor(value)
+        case UNITS.IMPERIAL: return Math.floor((value * 9 / 5) + 32)
+        case UNITS.KELVIN: return Math.floor(value + 273.15)
+    }
+}
+
 // use Redis or just simply useReducer to cache api results 
 
 function WeatherInfo({ lat, lng }) {
@@ -101,14 +109,6 @@ function WeatherInfo({ lat, lng }) {
 
     const classes = useStyles()
     const [tempUnit, setUnit] = useState(UNITS.METRIC)
-
-    const convertTemp = value => {
-        switch (tempUnit) {
-            case UNITS.METRIC: return Math.floor(value)
-            case UNITS.IMPERIAL: return Math.floor((value * 9 / 5) + 32)
-            case UNITS.KELVIN: return Math.floor(value + 273.15)
-        }
-    }
 
     useEffect(() => {
         setData({ isLoading: true })
@@ -146,14 +146,14 @@ function WeatherInfo({ lat, lng }) {
                 <Paper>
                     <div className={classes.weatherBoard}>
                         <div style={{ flexGrow: 2 }}>
-                            <p style={{ fontSize: '30px', transform: 'scale(1.8)' }}>{convertTemp(temp)}º</p>
+                            <p style={{ fontSize: '30px', transform: 'scale(1.8)' }}>{convertTemp(temp, tempUnit)}º</p>
                             <p style={{ fontSize: '20px' }}>{description.toUpperCase()}</p>
                         </div>
                         <div style={{ flexGrow: 1 }}></div>
                         <div style={{ flexGrow: 2 }}>
                             <img src={"http://openweathermap.org/img/w/" + icon + ".png"} style={{ transform: 'scale(1.1)' }} />
-                            <p>Feels like {convertTemp(feels_like)}º</p>
-                            <p>{convertTemp(temp_min)} / {convertTemp(temp_max)}º</p>
+                            <p>Feels like {convertTemp(feels_like, tempUnit)}º</p>
+                            <p>{convertTemp(temp_min, tempUnit)} / {convertTemp(temp_max, tempUnit)}º</p>
                         </div>
                     </div>
                 </Paper>
