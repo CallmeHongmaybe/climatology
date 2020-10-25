@@ -28,9 +28,4 @@ export default async (req, res) => {
     res.end()
 }
 
-// Array.prototype.quickSearch = function(el) {
-//     this.concat()
-// }
-
-
 // https://medium.com/@ni3t/caching-api-results-client-side-with-react-hooks-5f3070d6bdaa
