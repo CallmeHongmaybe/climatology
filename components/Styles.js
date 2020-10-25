@@ -1,11 +1,12 @@
 import { makeStyles } from '@material-ui/core'
 
+const root = {
+    flexGrow: 2,
+    color: 'white',
+}
+
 export const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 2,
-        backgroundColor: theme.palette.common.white,
-        color: 'white',
-    },
+    root,
     paper: {
         display: 'flex', justifyContent: 'center', flexFlow: 'column',
         margin: theme.spacing(4)
@@ -35,3 +36,35 @@ export const useSearchBarStyles = makeStyles((theme) => ({
         position: 'absolute', background: 'white', zIndex: 1, width: '90%', margin: 'auto', border: '1px solid black'
     }
 }))
+
+export const useClimateCardStyle = makeStyles((theme) => ({
+    root,
+    paper: {
+        padding: theme.spacing(2),
+        margin: "auto",
+        maxWidth: '100%'
+    },
+    code: {
+        fontSize: "55px",
+        textAlign: "center"
+    }
+}));
+
+export const useControlPanelStyle = () => {
+
+    const width = 25 // percent 
+
+    return {
+        background: "white",
+        width: `${width}%`,
+        padding: "2",
+        display: "flex",
+        justifyContent: "center",
+        flexFlow: "column",
+        alignItems: "center",
+        border: "2px solid rgba(0,0,0, 0.2)",
+        position: "absolute",
+        bottom: 10,
+        left: `${50 - width / 2}%`, 
+    }
+}

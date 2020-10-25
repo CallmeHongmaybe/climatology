@@ -1,7 +1,7 @@
-const cities = require('cities.json')
+const cities = require('../cities1000.json')
 const fs = require('fs')
 
-const stream = fs.createWriteStream('climate/cities.csv', {flags: 'a'})
+const stream = fs.createWriteStream('cities1000.csv', {flags: 'a'})
 
 stream.write('country, name, lat, lng\n', () => console.log("wrote the labels"))
 

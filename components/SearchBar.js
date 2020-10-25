@@ -1,27 +1,30 @@
 import { TextField, InputAdornment } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
-import { ACTIONS } from '../pages/app'
-import { useState } from 'react'
+import { ACTIONS, InfoContext } from '../pages/app'
+import { useContext, useState } from 'react'
 import Drawaa from './Drawaa'
 import { useSearchBarStyles } from './Styles'
 
-export default function SearchBar({dispatch}) {
+const lineStyle = { padding: 2, color: 'black', fontWeight: 'bold', cursor: 'pointer', listStyleType: 'none', fontFamily: 'revert', fontSize: '20px' }
+
+export default function SearchBar() {
 
     const classes = useSearchBarStyles()
 
-    const [suggested, setSuggested] = useState([])
+    const { dispatch } = useContext(InfoContext)
+
+    const [suggestion, setSuggestion] = useState([])
 
     const getCities = async (e) => {
         e.target.value
-            ? fetch(`../api/autocomplete?keyword=${e.target.value}`).then(res => res.json()).then(res => setSuggested(res))
-            : setSuggested([])
+            ? fetch(`../api/autocomplete?keyword=${e.target.value}`).then(res => res.json()).then(res => setSuggestion(res))
+            : setSuggestion([])
     }
 
     return (
         <div style={{
             alignSelf: 'center',
             background: 'blue',
-            borderBottom: '2px solid rgb(12, 102, 240)',
             position: 'relative',
             width: 'inherit'
         }}>
@@ -43,24 +46,26 @@ export default function SearchBar({dispatch}) {
                 </div>
                 <ul className={classes.autoCompleteMenu}>
                     {
-                    suggested.map((city, index) =>
-                        <li
-                            style={{ padding: 2, color: 'black', fontWeight: 'bold', cursor: 'pointer', listStyleType: 'none', fontFamily: 'revert', fontSize: '20px' }}
-                            key={index}
-
-                            onClick={() => {
-                                dispatch({
-                                    type: ACTIONS.GET_CITY_INFO,
-                                    payload: {
-                                        ...city
-                                    }
-                                })
-                            }}
-                        >
-                            {city.name}, {city.country}
-                        </li>
-                    )
-                }</ul>
+                        suggestion.map((city, index) =>
+                            <li
+                                style={lineStyle}
+                                key={index}
+                                onClick={() => {
+                                    dispatch({
+                                        type: ACTIONS.GET_CITY_INFO,
+                                        payload: {
+                                            ...city,
+                                            lat: city.coords[1],
+                                            lng: city.coords[0]
+                                        }
+                                    })
+                                }}
+                            >
+                                {city.name}, {city.country}
+                            </li>
+                        )
+                    }
+                </ul>
             </>
         </div>
 

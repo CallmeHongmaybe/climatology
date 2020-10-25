@@ -18,6 +18,7 @@ export const ACTIONS = {
     GET_CITY_INFO: "getCityInfo",
     UPDATE_FORECAST: "UpdateForecast",
     UPDATE_CLIMATE: "UpdateClimate",
+    TOGGLE_LAYER: "EnableLayers"
 }
 
 function reducer(info, { type, payload }) {
@@ -28,6 +29,8 @@ function reducer(info, { type, payload }) {
             return { ...info, climate: payload.climate, averages: payload.averages }
         case ACTIONS.UPDATE_FORECAST:
             return { ...info, forecast: payload }
+        case ACTIONS.TOGGLE_LAYER: 
+            return { ...info, show_layer: !info.show_layer }
         default: return info
     }
 }
@@ -44,6 +47,7 @@ export default function App() {
         climate: null,
         averages: null,
         forecast: null,
+        show_layer: false
     })
 
     const memoizedValues = useMemo(() => {
@@ -58,14 +62,14 @@ export default function App() {
             <Head>
                 <title>Find dem climates</title>
             </Head>
-            <div style={{ width: '45vw' }}>
-                <SearchBar dispatch={dispatch} />
-                <InfoContext.Provider value={memoizedValues}>
+            <InfoContext.Provider value={memoizedValues}>
+                <div style={{ width: '45vw' }}>
+                    <SearchBar />
                     <CityInfo {...city} />
-                </InfoContext.Provider>
+                </div>
+                <NoSSRMap />
+            </InfoContext.Provider>
 
-            </div>
-            <NoSSRMap lat={city.lat} lng={city.lng} dispatch={dispatch} />
         </div>
     )
 }
@@ -92,11 +96,3 @@ export default function App() {
 // catalog: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 // climate extremes: Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 // country by climate: Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-
-
-
-
-
-// why do we need routes: To lazy load of course. You can't just load all JS files like the last time you did it. 
-
-// use chip arrays to indicate country inputs like I did in WA 1 - https://material-ui.com/components/chips/#chip-array

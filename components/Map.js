@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactMapGL, {
   GeolocateControl,
   NavigationControl,
-  FlyToInterpolator
+  FlyToInterpolator,
 } from 'react-map-gl';
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
-import { ACTIONS } from '../pages/app'
+import { ACTIONS, InfoContext } from '../pages/app'
+import LayerControls from './LayerControls'
 
 const geocodeStyle = { width: 'fit-content', height: 'fit-content', position: 'absolute', zIndex: 2, right: 0, top: 0, marginRight: 2 }
 const navStyle = { ...geocodeStyle, top: 36 }
@@ -31,17 +32,17 @@ export async function getPlaceName(lat, lon) {
       name: '',
       country: ''
     }
-}
+} // thay link api này với link khác 
 
-// question: How can I allow the user to move around the map while enabling them to navigate to a specific location 
+export default function Map() {
 
-export default function Map({ lat, lng, dispatch }) {
+  const { city, dispatch } = useContext(InfoContext)
 
   const viewState = {
-    latitude: parseFloat(lat),
-    longitude: parseFloat(lng),
+    latitude: parseFloat(city.lat),
+    longitude: parseFloat(city.lng),
     zoom: 9,
-    transitionDuration: 3000,
+    transitionDuration: 2000,
     transitionInterpolator: new FlyToInterpolator()
   }
 
@@ -49,7 +50,7 @@ export default function Map({ lat, lng, dispatch }) {
 
   useEffect(() => {
     setViewport(viewState)
-  }, [lat, lng]) // when you click the searchbar and this will move the map 
+  }, [city.lat, city.lng]) // when you click the searchbar and this will move the map 
 
   // handleClick = (e) => {
   //     if (e.button == 3 || e.which == 2) console.log()
@@ -101,15 +102,11 @@ export default function Map({ lat, lng, dispatch }) {
             Longitude: {parseFloat(viewport.longitude) > 0 ? "E" : "W"}{convertCoordToDegrees(viewport.longitude)} <br />
           </Typography>
         </div>
+
+            <LayerControls/>
+        
       </ReactMapGL>
     </div>
   );
-
-
 }
 
-// Todo list:
-
-// Add forecast with appropriate icons 
-// Add a function that showing similar climate to the user
-// Allow users to find places with similar climates 

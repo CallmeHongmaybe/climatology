@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useStyles } from './Styles'
 import MonthAvgGraph from './Graph'
 import { ACTIONS, InfoContext } from '../pages/app'
-
+import ClimateCard from './Climate'
 
 const TABS = {
     CLIMATE: 'Climate',
@@ -38,10 +38,12 @@ function CityInfo({ country, name, lat, lng }) {
     return (
         <>
             <div align="center" className={classes.paper}>
-                <Typography gutterBottom variant="h4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ExploreIcon color="secondary" fontSize="inherit" />
-                    {name}, {country}
-                </Typography>
+                <div>
+                    <Typography gutterBottom variant="h4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ExploreIcon color="secondary" fontSize="inherit" />
+                        {name}, {country}
+                    </Typography>
+                </div>
                 <Paper className={classes.root}>
                     <Tabs
                         value={value}
@@ -82,7 +84,7 @@ function InfoPaper(option, country, name, lat, lng) {
     switch (option) {
         case TABS.BASIC_WEATHER: return <WeatherInfo lat={lat} lng={lng} />
         case TABS.AVERAGES: return <MonthAvgGraph country={country} name={name} lat={lat} lng={lng} />
-        default: return <div> Koppen-Geiger classification: sth</div>;
+        default: return <ClimateCard lat={lat} lng={lng} country={country} name={name} />;
     }
 
 }

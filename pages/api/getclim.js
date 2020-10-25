@@ -4,47 +4,33 @@ const standardSchema = require('../../models/schema')
 dbConnect()
 
 // you can sell this api for $0.01 per thousand request 
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 const splittedItems = item => item.replace("\s", "").split(',')
-
-const monthQuery = (months, minTemp, maxTemp, mean) => splittedItems(months).map(month => {
-    return {
-        $and: [
-            { [`${month}.min`]: { $gte: minTemp, $lt: mean } },
-            { [`${month}.max`]: { $gt: mean, $lte: maxTemp } },
-        ]
-    }
-})
 
 export default async (req, res) => {
     try {
         const { query: {
-            countries,
-            tempRange,
-            months,
-            limit
+            tempRange
         } } = req;
+
+        const getCurrentMonth = months[(new Date()).getMonth()]
 
         var [minTemp, maxTemp] = splittedItems(tempRange)
 
         minTemp = parseInt(minTemp), maxTemp = parseInt(maxTemp)
 
-        const mean = (minTemp + maxTemp) / 2
-
-        const monthQueries = await monthQuery(months, minTemp, maxTemp, mean)
-
-        const completeQuery = {
-            $and: [
-                { country: { $in: splittedItems(countries) } },
-                {
-                    $or: [].concat(...monthQueries)
+        const foundDocs = await standardSchema.aggregate([
+            {
+                $match: {
+                    [`${getCurrentMonth}.min`]: { $gte: minTemp },
+                    [`${getCurrentMonth}.max`]: { $lte: maxTemp }
                 }
-            ]
-        }
+            }, 
+            { $sample: { size: 5 } }
+        ])
 
         // testing 
-        const foundDocs = await standardSchema.find(completeQuery).limit(200).lean().exec()
-
         res.status(200).json(foundDocs)
         res.end()
     }

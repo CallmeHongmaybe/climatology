@@ -23,13 +23,13 @@ export default function Drawaa() {
                 <Menu />
             </Button>
             <Drawer
-                width={250}
+                width="40%"
                 anchor="left"
                 open={state}
                 onClose={toggleDrawer(false)}
             >
                 <List>
-                    {["Find similar climates", "Hit me up"].map((text) => (
+                    {["Find similar climates", "Hit me up", "Add missing place"].map((text) => (
                         <ListItem button key={text}>
                             <ListItemText primary={text} />
                         </ListItem>

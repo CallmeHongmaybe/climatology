@@ -8,12 +8,17 @@ export default async (req, res) => {
         const { query: {
             country,
             name,
-            lat, 
+            lat,
             lng
         } } = req;
-    
-        const foundDocs = await standardSchema.find({ country, name, lat, lng }).lean().exec()
-    
+
+        const foundDocs = await standardSchema.find(
+            {
+                country, name,
+                "location.coordinates": [parseFloat(lng), parseFloat(lat)]
+            }
+        ).lean().exec()
+
         res.status(200).json(foundDocs)
         res.end()
     }

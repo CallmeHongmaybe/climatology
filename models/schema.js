@@ -1,15 +1,22 @@
 const mongoose = require('mongoose')
+var schema = mongoose.Schema 
 // const {ObjectId} = mongoose.Schema.Types
-const MinMax = new mongoose.Schema({
+const MinMax = new schema({
     min: Number, 
     max: Number 
 })
 
-const standardSchema = new mongoose.Schema({
+const locationSchema = new schema({
+    location: {
+        type: {type: String}, 
+        coordinates: [] 
+    }
+})
+
+const standardSchema = new schema({
     country: String,
     name: String, 
-    lat: Number, 
-    lng: Number, 
+    location: locationSchema, 
     climate: String, 
     Jan: [MinMax], 
     Feb: [MinMax], 
@@ -25,7 +32,7 @@ const standardSchema = new mongoose.Schema({
     Dec: [MinMax]
 })
 
-
+standardSchema.index({location: '2dsphere'})
 
 module.exports = mongoose.models.standardSchema || mongoose.model("standardSchema", standardSchema, 'new_monthly_avg')
 
