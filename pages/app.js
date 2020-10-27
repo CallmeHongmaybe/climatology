@@ -76,18 +76,18 @@ export default function App() {
     )
 }
 
-export async function getStaticProps(ctx) {
+// export async function getStaticProps(ctx) {
 
-    // steps 
-    // 1. geolocate by any means 
-    // 2. collect the lat and lng then query the database for the nearest location. MOE 1 km. 
-    // 3. Cache the API result somewhere: it can be cookies 
-    // 3. export the document 
+//     // steps 
+//     // 1. geolocate by any means 
+//     // 2. collect the lat and lng then query the database for the nearest location. MOE 1 km. 
+//     // 3. Cache the API result somewhere: it can be cookies 
+//     // 3. export the document 
 
     
 
-     // treat this as a hashtag like : https://sth.org/#
-}
+//      // treat this as a hashtag like : https://sth.org/#
+// }
 
 
 // climate icon: 
