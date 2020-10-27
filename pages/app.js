@@ -2,7 +2,8 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import SearchBar from '../components/SearchBar';
 import CityInfo from '../components/CityInfo';
-import { useReducer, createContext, useMemo } from 'react'
+import { useReducer, createContext, useMemo, useEffect } from 'react'
+
 
 // geoJSON docs: https://tools.ietf.org/html/rfc7946 
 // geoJSON charter: https://datatracker.ietf.org/wg/geojson/charter/
@@ -29,7 +30,7 @@ function reducer(info, { type, payload }) {
             return { ...info, climate: payload.climate, averages: payload.averages }
         case ACTIONS.UPDATE_FORECAST:
             return { ...info, forecast: payload }
-        case ACTIONS.TOGGLE_LAYER: 
+        case ACTIONS.TOGGLE_LAYER:
             return { ...info, show_layer: !info.show_layer }
         default: return info
     }
@@ -37,8 +38,9 @@ function reducer(info, { type, payload }) {
 
 export const InfoContext = createContext()
 
-export default function App() {
+// https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
+export default function App() {    
     const [city, dispatch] = useReducer(reducer, {
         country: "AU",
         name: "Sydney",
@@ -49,7 +51,7 @@ export default function App() {
         forecast: null,
         show_layer: false
     })
-
+    
     const memoizedValues = useMemo(() => {
         return { city, dispatch }
     }, [city, dispatch])
@@ -60,7 +62,7 @@ export default function App() {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh' }}>
             <Head>
-                <title>Find dem climates</title>
+                <title>Weather advisor 2</title>
             </Head>
             <InfoContext.Provider value={memoizedValues}>
                 <div style={{ width: '45vw' }}>
@@ -74,22 +76,18 @@ export default function App() {
     )
 }
 
-// export async function getServerSideProps(ctx) {
+export async function getStaticProps(ctx) {
 
-//     var keys = ["country", "name", "lat", "lng"]
-//     const values = (ctx.query.place).split("_") || undefined
+    // steps 
+    // 1. geolocate by any means 
+    // 2. collect the lat and lng then query the database for the nearest location. MOE 1 km. 
+    // 3. Cache the API result somewhere: it can be cookies 
+    // 3. export the document 
 
-//     const zipKeysAndValues = keys => values => keys.reduce( (obj, key, i) => ({ ...obj, [key]: values[i] }), {})
+    
 
-//     return {
-//         props: values ? zipKeysAndValues(keys)(values) : {
-//             country: "AU",
-//             name: "Sydney",
-//             lat: -33.86785,
-//             lng: 151.20732
-//         } // or geolocation 
-//     }  // treat this as a hashtag like : https://sth.org/#
-// }
+     // treat this as a hashtag like : https://sth.org/#
+}
 
 
 // climate icon: 

@@ -97,12 +97,12 @@ export default function ClimateCard({ country, name, lat, lng }) {
                             <p>Rank: </p>
                             <p>{numeral(getClimateData.rank).format("0o")} (out of 31)</p>
                         </div>
-                        <Button 
-                        color="primary"
-                        onClick={() => dispatch({
-                            type: ACTIONS.TOGGLE_LAYER
-                        })}
-                        >See distribution of this climate</Button>
+                        <Button
+                            color="primary"
+                            onClick={() => dispatch({
+                                type: ACTIONS.TOGGLE_LAYER
+                            })}
+                        >{city.show_layer ? "Hide" : "See"} distribution of this climate</Button>
                         <Button color="primary">Find closest location that suits this climate</Button>
                     </Grid>
                 </Paper>

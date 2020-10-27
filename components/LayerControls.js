@@ -17,7 +17,6 @@ export default function LayerControls() {
     })
 
     const handleChange = (evt) => {
-        evt.preventDefault()
         setSettings({ ...settings, [evt.target.name]: evt.target.checked });
         // put all the code here
     };

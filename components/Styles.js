@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexFlow: 'row',
         fontWeight: '700',
-        color: 'blue'
+        color: 'black'
     },
     sunTime: { display: 'flex', justifyContent: 'space-between', padding: 3 },
     prompt: { fontSize: 20, textAlign: 'center' },

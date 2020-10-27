@@ -1,5 +1,6 @@
-const shapes = require("../../library/climateshapes.json")
+const climShapes = require("../../library/climateshapes.json")
 const climateInfo = require("../../library/koppen.json")
+
 
 export default (req, res) => {
     const {
@@ -7,7 +8,7 @@ export default (req, res) => {
     } = req 
 
     try {
-        var features = shapes.filter(
+        var features = climShapes.filter(
             el => el.climate === climate
         ).map(el => {
             return {

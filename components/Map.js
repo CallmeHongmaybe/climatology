@@ -3,14 +3,17 @@ import ReactMapGL, {
   GeolocateControl,
   NavigationControl,
   FlyToInterpolator,
+  Marker,
 } from 'react-map-gl';
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
 import { ACTIONS, InfoContext } from '../pages/app'
 import LayerControls from './LayerControls'
+import Pin from "../public/pin";
 
 const geocodeStyle = { width: 'fit-content', height: 'fit-content', position: 'absolute', zIndex: 2, right: 0, top: 0, marginRight: 2 }
 const navStyle = { ...geocodeStyle, top: 36 }
+
 
 function convertCoordToDegrees(coordValue) {
   var minuteVal = coordValue % 1;
@@ -102,9 +105,10 @@ export default function Map() {
             Longitude: {parseFloat(viewport.longitude) > 0 ? "E" : "W"}{convertCoordToDegrees(viewport.longitude)} <br />
           </Typography>
         </div>
-
-            <LayerControls/>
-        
+        <Marker latitude={city.lat} longitude={city.lng}>
+          <Pin onClick={() => setViewport(viewState)}></Pin>
+        </Marker>
+        <LayerControls />
       </ReactMapGL>
     </div>
   );
