@@ -28,7 +28,7 @@ export default async (req, res) => {
             }
         }, {
             '$limit': parseInt(limit)
-        }
+        },
     ])
 
     res.status(200).json(foundDocs)

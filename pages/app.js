@@ -3,7 +3,8 @@ import Head from 'next/head';
 import SearchBar from '../components/SearchBar';
 import CityInfo from '../components/CityInfo';
 import { useReducer, createContext, useMemo, useEffect } from 'react'
-
+import fetch from 'isomorphic-fetch'
+const origin = process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "https://weather-advisor2.vercel.app";
 
 // geoJSON docs: https://tools.ietf.org/html/rfc7946 
 // geoJSON charter: https://datatracker.ietf.org/wg/geojson/charter/
@@ -40,18 +41,14 @@ export const InfoContext = createContext()
 
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
-export default function App() {    
+export default function App(props) {
+
     const [city, dispatch] = useReducer(reducer, {
-        country: "AU",
-        name: "Sydney",
-        lat: -33.86785,
-        lng: 151.20732,
-        climate: null,
-        averages: null,
+        ...props, 
         forecast: null,
         show_layer: false
     })
-    
+
     const memoizedValues = useMemo(() => {
         return { city, dispatch }
     }, [city, dispatch])
@@ -75,11 +72,34 @@ export default function App() {
     )
 }
 
-// export async function getStaticProps(ctx) {
+export async function getStaticProps() {
 
-//     // steps 
-//     // 3. Cache the API result somewhere here: it can be cookies 
-//     // 3. export the document 
+    // steps 
+    // 3. Cache the API result somewhere here: it can be cookies 
+    // 3. export the document
 
-// }
+    const getLocation = await fetch(`${origin}/api/geolocate`)
+    const location = await getLocation.json()
+
+    const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
+
+    return {
+        props: {
+            country, name, lng, lat, climate,
+            averages: (() => {
+                let arry = []
+
+                for (let month in averages) {
+                    const { max, min } = averages[month]
+                    arry.push({
+                        name: month,
+                        Low: min,
+                        High: max
+                    })
+                }
+                return arry
+            })()
+        }
+    }
+}
 

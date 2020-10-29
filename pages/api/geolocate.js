@@ -1,7 +1,7 @@
 const geoip = require('geoip-lite')
 const dbConnect = require('../../utils/dbConnect')
 const fetch = require('isomorphic-fetch')
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== "production"
 const origin = dev ? "http://localhost:3000" : "https://weather-advisor2.vercel.app";
 
 dbConnect()
