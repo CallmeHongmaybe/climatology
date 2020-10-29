@@ -78,15 +78,8 @@ export default function App() {
 // export async function getStaticProps(ctx) {
 
 //     // steps 
-//     // 1. geolocate by any means 
-//     // 2. collect the lat and lng then query the database for the nearest location. MOE 1 km. 
-//     // 3. Cache the API result somewhere: it can be cookies 
+//     // 3. Cache the API result somewhere here: it can be cookies 
 //     // 3. export the document 
 
 // }
 
-
-// climate icon: 
-// catalog: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-// climate extremes: Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-// country by climate: Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
