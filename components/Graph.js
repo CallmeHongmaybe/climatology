@@ -64,8 +64,8 @@ export default function MonthAvgGraph({ country, name, lat, lng }) {
         return (
             <>
                 <LineChart
-                    width={600}
-                    height={300}
+                    width={window.screen.width * 0.42}
+                    height={window.screen.height * (1/3)}
                     data={data.content}
                     margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
                     style={{ top: '40%', position: 'absolute' }}

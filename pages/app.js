@@ -71,7 +71,6 @@ export default function App() {
                 </div>
                 <NoSSRMap />
             </InfoContext.Provider>
-
         </div>
     )
 }
@@ -84,9 +83,6 @@ export default function App() {
 //     // 3. Cache the API result somewhere: it can be cookies 
 //     // 3. export the document 
 
-    
-
-//      // treat this as a hashtag like : https://sth.org/#
 // }
 
 
