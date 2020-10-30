@@ -43,15 +43,10 @@ export const InfoContext = createContext()
 
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
-export default function App() {
+export default function App(props) {
 
     const [city, dispatch] = useReducer(reducer, {
-        country: "AU",
-        name: "Sydney",
-        lat: -33.86785,
-        lng: 151.20732, 
-        climate: null, 
-        averages: null, 
+        ...props,
         forecast: null,
         show_layer: false
     })
@@ -79,33 +74,33 @@ export default function App() {
     )
 }
 
-// export async function getStaticProps() {
+export async function getStaticProps() {
 
-//     // steps 
-//     // 3. Cache with localStorage
-//     // 3. export the document
+    // steps 
+    // 3. Cache with localStorage
+    // 3. export the document
 
-//     const getLocation = await fetch(`${origin}/api/geolocate`)
-//     const location = await getLocation.json()
+    const getLocation = await fetch(`${origin}/api/geolocate`)
+    const location = await getLocation.json()
 
-//     const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
+    const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
 
-//     return {
-//         props: {
-//             country, name, lat, lng, climate, 
-//             averages: (() => {
-//                 let arry = []
+    return {
+        props: {
+            country, name, lat, lng, climate, 
+            averages: (() => {
+                let array = []
 
-//                 for (let month in averages) {
-//                     const { max, min } = averages[month]
-//                     arry.push({
-//                         name: month,
-//                         Low: min,
-//                         High: max
-//                     })
-//                 }
-//                 return arry
-//             })()
-//         }
-//     }
-// }
+                for (let month in averages) {
+                    const { max, min } = averages[month]
+                    array.push({
+                        name: month,
+                        Low: min,
+                        High: max
+                    })
+                }
+                return array
+            })()
+        }
+    }
+}

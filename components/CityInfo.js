@@ -1,4 +1,3 @@
-import ExploreIcon from '@material-ui/icons/Explore'
 import { Typography, Paper, Tabs, Tab, ButtonGroup, Button } from '@material-ui/core'
 import { useState, useEffect, useContext } from 'react'
 import { useStyles } from './Styles'
@@ -40,7 +39,6 @@ function CityInfo({ country, name, lat, lng }) {
             <div align="center" className={classes.paper}>
                 <div>
                     <Typography gutterBottom variant="h4" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ExploreIcon color="secondary" fontSize="inherit" />
                         {name}, {country}
                     </Typography>
                 </div>

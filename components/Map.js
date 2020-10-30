@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import ReactMapGL, {
-  GeolocateControl,
   NavigationControl,
   FlyToInterpolator,
   Marker,
 } from 'react-map-gl';
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
-import { ACTIONS, InfoContext } from '../pages/app'
+import { InfoContext } from '../pages/app'
 import LayerControls from './LayerControls'
 import Pin from "../public/pin";
 
@@ -55,9 +54,6 @@ export default function Map() {
     setViewport(viewState)
   }, [city.lat, city.lng]) // when you click the searchbar and this will move the map 
 
-  // handleClick = (e) => {
-  //     if (e.button == 3 || e.which == 2) console.log()
-  // }
   return (
     <div style={{ display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh' }}>
       <Head>
@@ -75,27 +71,6 @@ export default function Map() {
         style={{ position: 'relative' }}
       // onClick={handleClick}
       >
-        <div style={geocodeStyle}>
-          <GeolocateControl
-            positionOptions={{ enableHighAccuracy: true }}
-            trackUserLocation={true}
-            onViewStateChange={async viewport => {
-              const { latitude, longitude } = viewport.viewState
-              const placeNameRes = await getPlaceName(latitude, longitude)
-              const { name, country } = placeNameRes
-              dispatch({ // replace dispatch with router.push( sth as sth ) 
-                type: ACTIONS.GET_CITY_INFO,
-                payload: {
-                  country,
-                  name,
-                  lat: parseFloat(latitude),
-                  lng: parseFloat(longitude),
-                }
-              })
-            }
-            }
-          />
-        </div>
         <div style={navStyle}>
           <NavigationControl />
         </div>
