@@ -15,7 +15,7 @@ export default function Home() {
           Welcome to Weather Advisor!
         </h1>
         
-        <h2>The go-to app for climate stuff across the world</h2>
+        <h2>A lightweight, minimalist app for climate stuff across the world</h2>
 
         <div className={styles.grid}>
           <Link href="/app">
@@ -25,12 +25,12 @@ export default function Home() {
             </a>
           </Link>
 
-          <Link href="/climate-extremes">
+          <Link href="/about">
             <a
               className={styles.card}
             >
-              <h3>Climate extremes &rarr;</h3>
-              <p>A curated list of climate outliers observed around the world.</p>
+              <h3>About</h3>
+              <p>How this project came to exist.</p>
             </a>
           </Link>
 

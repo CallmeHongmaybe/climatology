@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import SearchBar from '../components/SearchBar';
 import CityInfo from '../components/CityInfo';
-import { useReducer, createContext, useMemo, useEffect } from 'react'
+import { useReducer, createContext, useMemo } from 'react'
 import fetch from 'isomorphic-fetch'
 // import ls from 'local-storage'
 
@@ -26,6 +26,7 @@ export const ACTIONS = {
 }
 
 function reducer(info, { type, payload }) {
+    console.log("info", info)
     switch (type) {
         case ACTIONS.GET_CITY_INFO:
             return { ...payload }
@@ -75,10 +76,8 @@ export default function App(props) {
 }
 
 export async function getStaticProps() {
-
-    // steps 
     // 3. Cache with localStorage
-    // 3. export the document
+    // 4. export the document
 
     const getLocation = await fetch(`${origin}/api/geolocate`)
     const location = await getLocation.json()
@@ -87,7 +86,7 @@ export async function getStaticProps() {
 
     return {
         props: {
-            country, name, lat, lng, climate, 
+            country, name, lat, lng, climate,
             averages: (() => {
                 let array = []
 

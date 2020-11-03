@@ -1,16 +1,14 @@
 const geoip = require('geoip-lite')
-const dbConnect = require('../../utils/dbConnect')
 const dev = process.env.NODE_ENV !== "production"
-const { geoNearMiddleware } = require('../../middlewares/geonear.middleware')
-
-dbConnect()
+const { geoNearMiddleware } = require('../../services/geonear.middleware')
+const ip = require('request-ip')
 
 async function handler(req, res) {
     try {
-        let ipAddr = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.connection.socket.remoteAddress
+        let ipAddr = req.headers['x-forwarded-for'] || ip.getClientIp(req) || req.connection.remoteAddress || req.connection.socket.remoteAddress
 
         let geolookup = geoip.lookup(ipAddr)
-        var [lat, lng] = (dev) ? [10.775, 106.65] : (geolookup ? geolookup.ll : [,])
+        var [lat, lng] = (dev) ? [10.775, 106.65] : geolookup.ll
 
         const getLocation = await geoNearMiddleware(lat, lng, req)
 

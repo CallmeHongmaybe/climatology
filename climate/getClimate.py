@@ -27,4 +27,3 @@ def getClimate(x, y):
 
 
 sys.stdout.write(getClimate(lng, lat))
-

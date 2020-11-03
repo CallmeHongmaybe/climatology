@@ -39,5 +39,6 @@ yarn-error.log*
 /climate/__pycache__
 /climate/csvs
 /climate/spatial data
+next.config.js
 
 

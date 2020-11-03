@@ -80,8 +80,8 @@ function turnUnixToTime(unixTime, timezone) {
 function InfoPaper(option, country, name, lat, lng) {
 
     switch (option) {
-        case TABS.BASIC_WEATHER: return <WeatherInfo lat={lat} lng={lng} />
-        case TABS.AVERAGES: return <MonthAvgGraph country={country} name={name} lat={lat} lng={lng} />
+        case TABS.BASIC_WEATHER: return <WeatherInfo/>
+        case TABS.AVERAGES: return <MonthAvgGraph/>
         default: return <ClimateCard lat={lat} lng={lng} country={country} name={name} />;
     }
 
@@ -97,7 +97,7 @@ export const convertTemp = (value, unit) => {
 
 // use Redis or just simply useReducer to cache api results 
 
-function WeatherInfo({ lat, lng }) {
+function WeatherInfo() {
     // useContext goes here
 
     const { city, dispatch } = useContext(InfoContext)
@@ -117,7 +117,7 @@ function WeatherInfo({ lat, lng }) {
             console.log("Forecast cache used")
         }
         else {
-            fetch(`${apiRoot}?lat=${lat}&lon=${lng}${apiKey}${units}`)
+            fetch(`${apiRoot}?lat=${city.lat}&lon=${city.lng}${apiKey}${units}`)
                 .then(res => res.json())
                 .then(res => {
                     setData({ content: res, isLoading: false })
@@ -131,7 +131,7 @@ function WeatherInfo({ lat, lng }) {
                     throw new Error("API sucked. Reason " + error)
                 })
         }
-    }, [lat, lng])
+    }, [city.lat, city.lng])
 
     if (!data.isLoading) {
         const {

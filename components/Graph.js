@@ -1,11 +1,11 @@
 import { LineChart, Line, XAxis, Legend, LabelList } from "recharts"
 import { useState, useLayoutEffect, useContext } from 'react'
 import { ACTIONS, InfoContext } from '../pages/app'
-import fetchClimData from "../utils/fetchClimData"
+import fetchClimData from "../services/fetchClimData"
 import { UNITS, convertTemp } from './CityInfo'
 import { ButtonGroup, Button } from '@material-ui/core'
 
-export default function MonthAvgGraph({ country, name, lat, lng }) {
+export default function MonthAvgGraph() {
 
     const { city, dispatch } = useContext(InfoContext)
 
@@ -32,7 +32,7 @@ export default function MonthAvgGraph({ country, name, lat, lng }) {
         }
         else {
             try {
-                const fetchedData = await fetchClimData(country, name, lat, lng)
+                const fetchedData = await fetchClimData(city.country, city.name, city.lat, city.lng)
 
                 setData({
                     content: fetchedData.averages,
@@ -57,7 +57,7 @@ export default function MonthAvgGraph({ country, name, lat, lng }) {
 
     useLayoutEffect(() => {
         fetchTheData()
-    }, [lat, lng])
+    }, [city.lat, city.lng])
     // func.apply is not function solved: https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
 
     if (data.content) {

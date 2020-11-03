@@ -3,10 +3,10 @@ import { useClimateCardStyle } from './Styles'
 import { useContext, useEffect, useState } from 'react'
 import { ACTIONS, InfoContext } from "../pages/app";
 import Koppen from '../library/koppen.json'
-import fetchClimData from "../utils/fetchClimData";
+import fetchClimData from "../services/fetchClimData";
 import numeral from 'numeral'
 
-export default function ClimateCard({ country, name, lat, lng }) {
+export default function ClimateCard() {
     const classes = useClimateCardStyle();
 
     const [climate, setData] = useState({
@@ -26,7 +26,7 @@ export default function ClimateCard({ country, name, lat, lng }) {
         }
         else {
             try {
-                const fetchedData = await fetchClimData(country, name, lat, lng)
+                const fetchedData = await fetchClimData(city.country, city.name, city.lat, city.lng)
 
                 setData({
                     sign: fetchedData.climate,
@@ -52,7 +52,7 @@ export default function ClimateCard({ country, name, lat, lng }) {
 
     useEffect(() => {
         fetcher()
-    }, [lat, lng])
+    }, [city.lat, city.lng])
 
     if (climate.isLoading) {
         return (

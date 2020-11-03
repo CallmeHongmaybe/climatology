@@ -1,4 +1,4 @@
-const dbConnect = require("../utils/dbConnect");
+const dbConnect = require("./dbConnect");
 const standardSchema = require("../models/schema")
 
 dbConnect()

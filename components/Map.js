@@ -38,7 +38,7 @@ export async function getPlaceName(lat, lon) {
 
 export default function Map() {
 
-  const { city, dispatch } = useContext(InfoContext)
+  const { city } = useContext(InfoContext)
 
   const viewState = {
     latitude: parseFloat(city.lat),

@@ -2,7 +2,7 @@
 // const data = fs.readFileSync(process.cwd() + "/library/cities.json", {flags: 'r', encoding: 'utf8'})
 // const parsedData = JSON.parse(data)
 
-import dbConnect from '../../utils/dbConnect'
+import dbConnect from '../../services/dbConnect'
 import standardSchema from '../../models/schema'
 
 dbConnect()
