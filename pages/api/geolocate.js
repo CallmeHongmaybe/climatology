@@ -10,8 +10,7 @@ async function handler(req, res) {
         let geolookup = geoip.lookup(ipAddr)
         var [lat, lng] = (dev) ? [10.775, 106.65] : geolookup.ll
 
-        const getLocation = await geoNearMiddleware(lat, lng, req)
-
+        var getLocation = await geoNearMiddleware(lat, lng, req)
         res.send(getLocation)
         res.end('ok')
     }

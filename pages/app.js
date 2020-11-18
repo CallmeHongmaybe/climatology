@@ -26,7 +26,6 @@ export const ACTIONS = {
 }
 
 function reducer(info, { type, payload }) {
-    console.log("info", info)
     switch (type) {
         case ACTIONS.GET_CITY_INFO:
             return { ...payload }
@@ -44,10 +43,15 @@ export const InfoContext = createContext()
 
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
-export default function App(props) {
+export default function App() {
 
     const [city, dispatch] = useReducer(reducer, {
-        ...props,
+        country: "AU",
+        name: "Launceston",
+        lat: -41.43876,
+        lng: 147.13467,
+        climate: "Cfb",
+        averages: null, 
         forecast: null,
         show_layer: false
     })
@@ -75,31 +79,31 @@ export default function App(props) {
     )
 }
 
-export async function getStaticProps() {
-    // 3. Cache with localStorage
-    // 4. export the document
+// export async function getStaticProps() {
+//     // 3. Cache with localStorage
+//     // 4. export the document
 
-    const getLocation = await fetch(`${origin}/api/geolocate`)
-    const location = await getLocation.json()
+//     const getLocation = await fetch(`${origin}/api/geolocate`)
+//     const location = await getLocation.json()
 
-    const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
+//     const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
 
-    return {
-        props: {
-            country, name, lat, lng, climate,
-            averages: (() => {
-                let array = []
+//     return {
+//         props: {
+//             country, name, lat, lng, climate,
+//             averages: (() => {
+//                 let array = []
 
-                for (let month in averages) {
-                    const { max, min } = averages[month]
-                    array.push({
-                        name: month,
-                        Low: min,
-                        High: max
-                    })
-                }
-                return array
-            })()
-        }
-    }
-}
+//                 for (let month in averages) {
+//                     const { max, min } = averages[month]
+//                     array.push({
+//                         name: month,
+//                         Low: min,
+//                         High: max
+//                     })
+//                 }
+//                 return array
+//             })()
+//         }
+//     }
+// }

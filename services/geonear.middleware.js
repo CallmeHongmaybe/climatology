@@ -8,11 +8,12 @@ dbConnect()
 export async function geoNearMiddleware(lat, lng, req) {
     const { query: { climate, limit } } = req
 
+    // if the api query is left blank then geolocation is inferred
     const queryClimate = climate ? {
-        'query': {
-            climate: climate
-        }
-    } : {}
+        'query': { climate }
+    } : {
+        'maxDistance': 5 * 1000
+    }
 
     const foundDocs = await standardSchema.aggregate([
         {
@@ -24,12 +25,12 @@ export async function geoNearMiddleware(lat, lng, req) {
                     ]
                 },
                 'distanceField': 'distance',
-                'maxDistance': 5 * 10e3,
                 'spherical': true,
+                'distanceMultiplier': 1 / 1000,
                 ...queryClimate
             }
         }, {
-            '$limit': parseInt(limit) || 1 
+            '$limit': parseInt(limit) || 1
         },
     ])
 

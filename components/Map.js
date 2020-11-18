@@ -5,12 +5,14 @@ import ReactMapGL, {
   Marker,
 } from 'react-map-gl';
 import Head from 'next/head'
-import { Typography } from '@material-ui/core'
-import { InfoContext } from '../pages/app'
+import { Typography, IconButton } from '@material-ui/core'
+import { GpsFixed } from '@material-ui/icons'
+import { ACTIONS, InfoContext } from '../pages/app'
 import LayerControls from './LayerControls'
 import Pin from "../public/pin";
+import { climDataTemplate } from "../services/fetchClimData";
 
-const geocodeStyle = { width: 'fit-content', height: 'fit-content', position: 'absolute', zIndex: 2, right: 0, top: 0, marginRight: 2 }
+const geocodeStyle = { position: 'absolute', right: 20, top: 0 }
 const navStyle = { ...geocodeStyle, top: 36 }
 
 
@@ -23,22 +25,11 @@ function convertCoordToDegrees(coordValue) {
   return `${Math.floor(Math.abs(coordValue))}º ${Math.floor(Math.abs(minuteVal))}' ${Math.abs(secondVal.toFixed(2))}''`
 }
 
-
-export async function getPlaceName(lat, lon) {
-  const getPlaceName = await fetch(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=en&featureTypes=&location=${lon}%2C${lat}`);
-  const placeName = await getPlaceName.json()
-  return placeName.address ? {
-    name: placeName.address.City,
-    country: placeName.address.CountryCode
-  } : {
-      name: '',
-      country: ''
-    }
-} // thay link api này với link khác 
+// thay link api này với link khác 
 
 export default function Map() {
 
-  const { city } = useContext(InfoContext)
+  const { city, dispatch } = useContext(InfoContext)
 
   const viewState = {
     latitude: parseFloat(city.lat),
@@ -71,9 +62,30 @@ export default function Map() {
         style={{ position: 'relative' }}
       // onClick={handleClick}
       >
+
+          <button aria-label="Geolocate" style={{backgroundColor: 'white'}} color="primary" style={geocodeStyle} onClick={() => {
+            fetch("../api/geolocate")
+              .then(res => res.json())
+              .then(res => {
+                let [lng, lat] = res[0].location.coordinates
+                let climData = climDataTemplate(res)
+                dispatch({
+                  type: ACTIONS.GET_CITY_INFO,
+                  payload: {
+                    ...res[0],
+                    lat, lng,
+                    ...climData
+                  }
+                }) // dispatch
+              }) // then 
+          }}>
+            <GpsFixed />
+          </button>
+
         <div style={navStyle}>
           <NavigationControl />
         </div>
+
         <div style={{ left: 0, bottom: 0, background: "rgba(0,0,0, 0.4)", color: 'white', padding: 2, width: '30%', wordSpacing: 1.1 }}>
           <Typography variant="body1">
             Latitude: {parseFloat(viewport.latitude) > 0 ? "N" : "S"}{convertCoordToDegrees(viewport.latitude)} <br />

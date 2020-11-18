@@ -1,9 +1,13 @@
 export default async function fetchClimData(country, name, lat, lng) {
     const res = await fetch(`../api/getlocclim?country=${country}&name=${name}&lat=${lat}&lng=${lng}`)
     const fetchedRes = await res.json()
+    return climDataTemplate(fetchedRes)
+}
+
+export function climDataTemplate(fetchedRes) {
     const [{ climate, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec }] = fetchedRes
     return {
-        climate,
+        climate, 
         averages: [
             { name: "Jan", Low: Jan.min, High: Jan.max },
             { name: "Feb", Low: Feb.min, High: Feb.max },

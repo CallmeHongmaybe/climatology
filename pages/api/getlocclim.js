@@ -1,23 +1,8 @@
-const dbConnect = require('../../services/dbConnect')
-const standardSchema = require('../../models/schema')
-
-dbConnect()
+import databaseQuery from "../../services/query.middleware"
 
 export default async (req, res) => {
     try {
-        const { query: {
-            country,
-            name,
-            lat,
-            lng
-        } } = req;
-
-        const foundDocs = await standardSchema.find(
-            {
-                country, name,
-                "location.coordinates": [parseFloat(lng), parseFloat(lat)]
-            }
-        ).lean().exec()
+        const foundDocs = await databaseQuery(req)
 
         res.status(200).json(foundDocs)
         res.end()
