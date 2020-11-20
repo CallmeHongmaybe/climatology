@@ -1,9 +1,9 @@
 import { Button, Grid, Paper, Typography } from "@material-ui/core"
-import { useClimateCardStyle } from './Styles'
+import { useClimateCardStyle } from '../Styles'
 import { useContext, useEffect, useState } from 'react'
-import { ACTIONS, InfoContext } from "../pages/app";
-import Koppen from '../library/koppen.json'
-import fetchClimData from "../services/fetchClimData";
+import { ACTIONS, InfoContext } from "../../pages/app";
+import Koppen from '../../library/koppen.json'
+import fetchClimData from "../../services/fetchClimData";
 import numeral from 'numeral'
 
 export default function ClimateCard() {

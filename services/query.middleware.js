@@ -5,7 +5,7 @@ dbConnect()
 
 export const TYPES = {
     GET_AVG_TEMP: "GET_AVG_TEMP",
-    GET_LOC_CLIMATE: "GET_LOC_CLIMATE", 
+    GET_LOC_CLIMATE: "GET_LOC_CLIMATE",
     GET_RANDOM_LOC: "GET_RANDOM_LOC"
 }
 
@@ -22,7 +22,7 @@ export default async function databaseQuery(req, type = TYPES.GET_LOC_CLIMATE) {
 
             return await standardSchema.find(
                 {
-                    country, name, 
+                    country, name,
                     "location.coordinates": [parseFloat(lng), parseFloat(lat)]
                 }
             ).lean().exec()
@@ -51,8 +51,10 @@ export default async function databaseQuery(req, type = TYPES.GET_LOC_CLIMATE) {
                 },
                 [getCurrentMonth]: 1
             })
-        case GET_RANDOM_LOC: 
-            return; 
+        case TYPES.GET_RANDOM_LOC:
+            return await standardSchema.aggregate([
+                { $sample: { size: 1 } }
+            ]);
         default:
             return;
     }

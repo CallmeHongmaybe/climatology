@@ -5,15 +5,13 @@ import ReactMapGL, {
   Marker,
 } from 'react-map-gl';
 import Head from 'next/head'
-import { Typography, IconButton } from '@material-ui/core'
-import { GpsFixed } from '@material-ui/icons'
-import { ACTIONS, InfoContext } from '../pages/app'
+import { Typography } from '@material-ui/core'
+import { InfoContext } from '../pages/app'
 import LayerControls from './LayerControls'
 import Pin from "../public/pin";
-import { climDataTemplate } from "../services/fetchClimData";
+import SideDrawer from "./playground_menu";
 
-const geocodeStyle = { position: 'absolute', right: 20, top: 0 }
-const navStyle = { ...geocodeStyle, top: 36 }
+const navStyle = { position: 'absolute', right: 20, top: 0, top: 10 }
 
 
 function convertCoordToDegrees(coordValue) {
@@ -29,7 +27,7 @@ function convertCoordToDegrees(coordValue) {
 
 export default function Map() {
 
-  const { city, dispatch } = useContext(InfoContext)
+  const { city } = useContext(InfoContext)
 
   const viewState = {
     latitude: parseFloat(city.lat),
@@ -62,28 +60,10 @@ export default function Map() {
         style={{ position: 'relative' }}
       // onClick={handleClick}
       >
-
-          <button aria-label="Geolocate" style={{backgroundColor: 'white'}} color="primary" style={geocodeStyle} onClick={() => {
-            fetch("../api/geolocate")
-              .then(res => res.json())
-              .then(res => {
-                let [lng, lat] = res[0].location.coordinates
-                let climData = climDataTemplate(res)
-                dispatch({
-                  type: ACTIONS.GET_CITY_INFO,
-                  payload: {
-                    ...res[0],
-                    lat, lng,
-                    ...climData
-                  }
-                }) // dispatch
-              }) // then 
-          }}>
-            <GpsFixed />
-          </button>
+        <SideDrawer/>
 
         <div style={navStyle}>
-          <NavigationControl />
+          <NavigationControl/>
         </div>
 
         <div style={{ left: 0, bottom: 0, background: "rgba(0,0,0, 0.4)", color: 'white', padding: 2, width: '30%', wordSpacing: 1.1 }}>

@@ -5,22 +5,22 @@ export default async function fetchClimData(country, name, lat, lng) {
 }
 
 export function climDataTemplate(fetchedRes) {
-    const [{ climate, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec }] = fetchedRes
+    const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = fetchedRes
+    
     return {
-        climate, 
-        averages: [
-            { name: "Jan", Low: Jan.min, High: Jan.max },
-            { name: "Feb", Low: Feb.min, High: Feb.max },
-            { name: "Mar", Low: Mar.min, High: Mar.max },
-            { name: "Apr", Low: Apr.min, High: Apr.max },
-            { name: "May", Low: May.min, High: May.max },
-            { name: "Jun", Low: Jun.min, High: Jun.max },
-            { name: "Jul", Low: Jul.min, High: Jul.max },
-            { name: "Aug", Low: Aug.min, High: Aug.max },
-            { name: "Sep", Low: Sep.min, High: Sep.max },
-            { name: "Oct", Low: Oct.min, High: Oct.max },
-            { name: "Nov", Low: Nov.min, High: Nov.max },
-            { name: "Dec", Low: Dec.min, High: Dec.max }
-        ]
+        country, name, lat, lng, climate,
+        averages: (() => {
+            let array = []
+
+            for (let month in averages) {
+                const { max, min } = averages[month]
+                array.push({
+                    name: month,
+                    Low: min,
+                    High: max
+                })
+            }
+            return array
+        })()
     }
 }

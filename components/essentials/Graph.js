@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, Legend, LabelList } from "recharts"
 import { useState, useLayoutEffect, useContext } from 'react'
-import { ACTIONS, InfoContext } from '../pages/app'
-import fetchClimData from "../services/fetchClimData"
+import { ACTIONS, InfoContext } from '../../pages/app'
+import fetchClimData from "../../services/fetchClimData"
 import { UNITS, convertTemp } from './CityInfo'
 import { ButtonGroup, Button } from '@material-ui/core'
 

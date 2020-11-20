@@ -11,6 +11,7 @@ async function handler(req, res) {
         var [lat, lng] = (dev) ? [10.775, 106.65] : geolookup.ll
 
         var getLocation = await geoNearMiddleware(lat, lng, req)
+
         res.send(getLocation)
         res.end('ok')
     }

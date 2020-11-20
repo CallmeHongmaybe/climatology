@@ -68,3 +68,14 @@ export const useControlPanelStyle = () => {
         left: `${50 - width / 2}%`, 
     }
 }
+
+export const useDrawerStyle = makeStyles({
+    fullList: {
+        width: "auto", 
+    },
+    rightCorner: {
+        right: 10,
+        bottom: 10,
+        position: "absolute"
+    }
+});

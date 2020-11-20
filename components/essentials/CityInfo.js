@@ -1,8 +1,8 @@
 import { Typography, Paper, Tabs, Tab, ButtonGroup, Button } from '@material-ui/core'
 import { useState, useEffect, useContext } from 'react'
-import { useStyles } from './Styles'
+import { useStyles } from '../Styles'
 import MonthAvgGraph from './Graph'
-import { ACTIONS, InfoContext } from '../pages/app'
+import { ACTIONS, InfoContext } from '../../pages/app'
 import ClimateCard from './Climate'
 
 const TABS = {

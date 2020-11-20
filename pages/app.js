@@ -1,12 +1,10 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import SearchBar from '../components/SearchBar';
-import CityInfo from '../components/CityInfo';
+import CityInfo from '../components/essentials/CityInfo';
 import { useReducer, createContext, useMemo } from 'react'
-import fetch from 'isomorphic-fetch'
-// import ls from 'local-storage'
-
-const origin = process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "https://weather-advisor2.vercel.app";
+import databaseQuery, { TYPES } from '../services/query.middleware'
+import { climDataTemplate } from '../services/fetchClimData';
 
 // geoJSON docs: https://tools.ietf.org/html/rfc7946 
 // geoJSON charter: https://datatracker.ietf.org/wg/geojson/charter/
@@ -43,15 +41,10 @@ export const InfoContext = createContext()
 
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
-export default function App() {
+export default function App(props) {
 
     const [city, dispatch] = useReducer(reducer, {
-        country: "AU",
-        name: "Launceston",
-        lat: -41.43876,
-        lng: 147.13467,
-        climate: "Cfb",
-        averages: null, 
+        ...props, 
         forecast: null,
         show_layer: false
     })
@@ -79,31 +72,10 @@ export default function App() {
     )
 }
 
-// export async function getStaticProps() {
-//     // 3. Cache with localStorage
-//     // 4. export the document
+export async function getStaticProps() {
 
-//     const getLocation = await fetch(`${origin}/api/geolocate`)
-//     const location = await getLocation.json()
+    return {
+        props: climDataTemplate(await databaseQuery(null, TYPES.GET_RANDOM_LOC))
+    }
 
-//     const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = location
-
-//     return {
-//         props: {
-//             country, name, lat, lng, climate,
-//             averages: (() => {
-//                 let array = []
-
-//                 for (let month in averages) {
-//                     const { max, min } = averages[month]
-//                     array.push({
-//                         name: month,
-//                         Low: min,
-//                         High: max
-//                     })
-//                 }
-//                 return array
-//             })()
-//         }
-//     }
-// }
+}

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start", 
+    "start": "next start",
     "clean": "rimraf -rf .next"
   },
   "dependencies": {
@@ -13,6 +13,7 @@
     "@material-ui/icons": "^4.9.1",
     "geoip-lite": "^1.4.2",
     "isomorphic-fetch": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
     "local-storage": "^2.0.0",
     "mongoose": "^5.10.7",
     "next": "^9.5.4",
