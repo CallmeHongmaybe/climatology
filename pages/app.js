@@ -3,8 +3,6 @@ import Head from 'next/head';
 import SearchBar from '../components/SearchBar';
 import CityInfo from '../components/essentials/CityInfo';
 import { useReducer, createContext, useMemo } from 'react'
-import databaseQuery, { TYPES } from '../services/query.middleware'
-import { climDataTemplate } from '../services/fetchClimData';
 
 // geoJSON docs: https://tools.ietf.org/html/rfc7946 
 // geoJSON charter: https://datatracker.ietf.org/wg/geojson/charter/
@@ -41,10 +39,15 @@ export const InfoContext = createContext()
 
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
 
-export default function App(props) {
+export default function App() {
 
     const [city, dispatch] = useReducer(reducer, {
-        ...props, 
+        country: "CA",
+        name: "Calgary",
+        lat: 51.05011,
+        lng: -114.08529,
+        climate: null, 
+        averages: [], 
         forecast: null,
         show_layer: false
     })
@@ -70,12 +73,4 @@ export default function App(props) {
             </InfoContext.Provider>
         </div>
     )
-}
-
-export async function getStaticProps() {
-
-    return {
-        props: climDataTemplate(await databaseQuery(null, TYPES.GET_RANDOM_LOC))
-    }
-
 }

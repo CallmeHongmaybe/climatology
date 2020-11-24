@@ -3,11 +3,11 @@ import { useDrawerStyle } from '../Styles'
 import {
     Drawer,
     BottomNavigation,
-    BottomNavigationAction,
     Fab
 } from "@material-ui/core";
-import { LocationOn, Menu } from "@material-ui/icons";
+import { Menu } from "@material-ui/icons";
 import GeolocateButton from "./GeolocateButton";
+import RandomButton from './RandomButton'
 
 
 export default function SideDrawer() {
@@ -36,12 +36,8 @@ export default function SideDrawer() {
             showLabels
             className={classes.fullList}
         >
-            <GeolocateButton sideEffect={() => toggleDrawer()}/>
-            <BottomNavigationAction
-                label="Show city clusters"
-                icon={<LocationOn />}
-                onClick={() => toggleDrawer()}
-            />
+            <GeolocateButton sideEffect={() => toggleDrawer()} />
+            <RandomButton sideEffect={() => toggleDrawer()} />
         </BottomNavigation>
     );
 
