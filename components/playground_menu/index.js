@@ -38,6 +38,7 @@ export default function SideDrawer() {
         >
             <GeolocateButton sideEffect={() => toggleDrawer()} />
             <RandomButton sideEffect={() => toggleDrawer()} />
+            {/* Next one - Query climate for user-selected area: https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/ */}
         </BottomNavigation>
     );
 

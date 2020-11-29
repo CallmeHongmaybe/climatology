@@ -8,6 +8,7 @@ export function climDataTemplate(fetchedRes) {
     const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = fetchedRes
     
     return {
+        _id, 
         country, name, lat, lng, climate,
         averages: (() => {
             let array = []

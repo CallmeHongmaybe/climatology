@@ -12,8 +12,8 @@ export async function geoNearMiddleware(lat, lng, req) {
     const queryClimate = climate ? {
         'query': { climate }
     } : {
-        'maxDistance': 5 * 1000
-    }
+            'maxDistance': 5 * 1000
+        }
 
     const foundDocs = await standardSchema.aggregate([
         {
@@ -32,7 +32,20 @@ export async function geoNearMiddleware(lat, lng, req) {
         }, {
             '$limit': parseInt(limit) || 1
         },
-    ])
+    ]).project(climate ? {
+        distance: 1,
+        location: 1,
+        country: 1,
+        name: 1,
+        _id: 1
+    } : {
+            _id: 1,
+            country: 1,
+            name: 1,
+            location: 1,
+            climate: 1,
+            Jan: 1, Feb: 1, Mar: 1, Apr: 1, May: 1, Jun: 1, Jul: 1, Aug: 1, Sep: 1, Oct: 1, Nov: 1, Dec: 1
+        })
 
     return foundDocs
 }

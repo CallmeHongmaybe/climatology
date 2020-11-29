@@ -37,11 +37,10 @@ function reducer(info, { type, payload }) {
 
 export const InfoContext = createContext()
 
-// https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation 
-
 export default function App() {
 
     const [city, dispatch] = useReducer(reducer, {
+        _id: "5f7967928cea559a7e9cf062", 
         country: "CA",
         name: "Calgary",
         lat: 51.05011,

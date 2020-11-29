@@ -6,7 +6,8 @@ dbConnect()
 export const TYPES = {
     GET_AVG_TEMP: "GET_AVG_TEMP",
     GET_LOC_CLIMATE: "GET_LOC_CLIMATE",
-    GET_RANDOM_LOC: "GET_RANDOM_LOC"
+    GET_RANDOM_LOC: "GET_RANDOM_LOC",
+    GET_NEAREST_LOCS: "GET_NEAREST_LOCS"
 }
 
 export const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -51,6 +52,7 @@ export default async function databaseQuery(req, type = TYPES.GET_LOC_CLIMATE) {
                 },
                 [getCurrentMonth]: 1
             })
+
         case TYPES.GET_RANDOM_LOC:
             return await standardSchema.aggregate([
                 { $sample: { size: 1 } }

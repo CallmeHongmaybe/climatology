@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "clean": "rimraf -rf .next"
+    "clean": "rimraf -rf .next", 
+    "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",

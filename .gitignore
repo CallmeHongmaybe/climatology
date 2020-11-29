@@ -39,7 +39,7 @@ yarn-error.log*
 /climate/__pycache__
 /climate/csvs
 /climate/spatial data
-next.config.js
+/next.config.js
 
 # Raster files ( tb pushed to s3 ) 
 tmin.tif
@@ -47,3 +47,4 @@ tmax.tif
 
 # dev use only 
 /utils
+
