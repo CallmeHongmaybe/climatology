@@ -11,7 +11,7 @@ function getCoordFromIP(req) {
     let geolookup = geoip.lookup(ipAddr)
     var [lat, lng] = (dev) ? [mylon, mylat] : geolookup.ll // error is here 
 
-    return [lng, lat]
+    return [lat, lng]
 }
 
 async function geolocator(req, res) {
