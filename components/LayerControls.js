@@ -139,7 +139,7 @@ export default function LayerControls({ sideEffect }) {
                                         onClick={() => {
                                             setClusterState({
                                                 ...clusterState,
-                                                popUpInfo: { country, name, lat, lng, distance }
+                                                popUpInfo: { _id, country, name, lat, lng, distance }
                                             })
                                         }
                                         }
