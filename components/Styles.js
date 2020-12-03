@@ -52,7 +52,7 @@ export const useClimateCardStyle = makeStyles((theme) => ({
 
 export const useControlPanelStyle = () => {
 
-    const width = 25 // percent 
+    const width = 30 // percent 
 
     return {
         background: "white",

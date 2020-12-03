@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { Layer, Source, Marker, Popup } from "react-map-gl";
 import { ACTIONS, InfoContext } from "../pages/app";
 import { useControlPanelStyle } from './Styles'
-import { Button, Switch, FormGroup, FormControlLabel } from "@material-ui/core";
+import { Button, Switch, FormGroup, FormControlLabel, Typography, Tooltip } from "@material-ui/core";
+import InfoIcon from '@material-ui/icons/Info';
 import Pin from "../public/pin";
 
-export default function LayerControls() {
+export default function LayerControls({ sideEffect }) {
 
     const { city, dispatch } = useContext(InfoContext)
 
@@ -60,13 +61,22 @@ export default function LayerControls() {
             fetch(`../api/geolocate?climate=${city.climate}&limit=5`)
                 .then(res => res.json())
                 .then(res => {
+
+                    const [lng, lat] = res[0].location.coordinates
+
                     setClusterState({
                         ...clusterState, placeData: res
                     })
+                    sideEffect()({
+                        latitude: lat, longitude: lng, zoom: 3
+                    })
+
                 })
                 .finally(() => console.log("Place api called"))
+                .catch(ex => {
+                    throw new Error(ex)
+                })
         }
-        else;
     }, [clusterState.show])
 
     useEffect(() => {
@@ -126,10 +136,13 @@ export default function LayerControls() {
                             <>
                                 <Marker key={place._id} longitude={lng} latitude={lat}>
                                     <Pin color="#0000ff"
-                                        onClick={() => setClusterState({
-                                            ...clusterState,
-                                            popUpInfo: { country, name, lat, lng, distance }
-                                        })}
+                                        onClick={() => {
+                                            setClusterState({
+                                                ...clusterState,
+                                                popUpInfo: { country, name, lat, lng, distance }
+                                            })
+                                        }
+                                        }
                                     ></Pin>
                                 </Marker>
                                 {
@@ -139,14 +152,18 @@ export default function LayerControls() {
                                             anchor="top"
                                             longitude={clusterState.popUpInfo.lng}
                                             latitude={clusterState.popUpInfo.lat}
-                                            closeOnClick={true}
+                                            closeOnClick={false}
                                             onClose={() => setClusterState({
                                                 ...clusterState,
                                                 popUpInfo: null
                                             })}
                                         >
                                             <div style={{ padding: 2 }}>
-                                                <span>{clusterState.popUpInfo.name}, {clusterState.popUpInfo.country}</span>
+                                                <a onClick={() => dispatch({
+                                                    type: ACTIONS.GET_CITY_INFO,
+                                                    payload: { ...clusterState.popUpInfo }
+                                                })
+                                                }>{clusterState.popUpInfo.name}, {clusterState.popUpInfo.country}</a>
                                                 <br />
                                                 <span>Distance: {Math.floor(clusterState.popUpInfo.distance)} km</span>
                                             </div>
@@ -161,41 +178,57 @@ export default function LayerControls() {
         }
     }
 
-    if (city.show_layer) {
-        return (
-            <>
-                {ClimateLayer()}
-                {LocationCluster()}
-                <div
-                    style={controlPanelStyle}
-                >
-                    <FormGroup column={true}>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={layerState.show}
-                                    onChange={handleLayer}
-                                />
-                            }
-                            label="Climate layer"
+    const ButtonControls = () => (
+        <div
+            style={controlPanelStyle}
+        >
+            <FormGroup column={true}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={layerState.show}
+                            onChange={handleLayer}
                         />
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={clusterState.show}
-                                    onChange={handleCluster}
-                                    color="primary"
-                                />
-                            }
-                            label="Cluster"
+                    }
+                    label="Climate layer"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={clusterState.show}
+                            onChange={handleCluster}
+                            color="primary"
                         />
-                    </FormGroup>
-                    <Button onClick={clearAllLayers}>
-                        Clear all layers
-                  </Button>
-                </div>
-            </>
-        )
-    }
-    else return <></>;
+                    }
+                    label={<div style={{display: 'flex', flexFlow: 'row'}}>
+                        <Typography>Nearest places</Typography>
+                        <Tooltip title="Nearest locations to you that matches the climate">
+                            <InfoIcon fontSize="small"/>
+                        </Tooltip>
+                    </div>}
+                />
+            </FormGroup>
+            <Button onClick={clearAllLayers}>
+                Clear all layers
+      </Button>
+        </div>
+    )
+
+    return city.show_layer ? (
+        <>
+            {ClimateLayer()}
+            {LocationCluster()}
+            {ButtonControls()}
+        </>
+    ) : <></>
+
 }
+
+/*
+Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+    in Map (created by ForwardRef(LoadableComponent))
+    in ForwardRef(LoadableComponent) (at app.js:71)
+    in div (at app.js:62)
+    in App (at _app.js:4)
+    in MyApp
+*/

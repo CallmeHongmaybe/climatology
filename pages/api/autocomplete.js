@@ -18,6 +18,7 @@ export default async (req, res) => {
         }
     }, {
         $project: {
+            _id: 1, 
             country: 1,
             name: 1, 
             coords: "$location.coordinates"

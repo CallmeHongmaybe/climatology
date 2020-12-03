@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import ReactMapGL, {
   NavigationControl,
   FlyToInterpolator,
@@ -13,7 +13,6 @@ import SideDrawer from "./playground_menu";
 
 const navStyle = { position: 'absolute', right: 20, top: 0, top: 10 }
 
-
 function convertCoordToDegrees(coordValue) {
   var minuteVal = coordValue % 1;
   minuteVal *= 60;
@@ -24,6 +23,8 @@ function convertCoordToDegrees(coordValue) {
 }
 
 // thay link api này với link khác 
+
+export const MapContext = createContext()
 
 export default function Map() {
 
@@ -58,12 +59,12 @@ export default function Map() {
           ...nextViewport
         })}
         style={{ position: 'relative' }}
-      // onClick={handleClick}
       >
-        <SideDrawer/>
+
+        <SideDrawer />
 
         <div style={navStyle}>
-          <NavigationControl/>
+          <NavigationControl />
         </div>
 
         <div style={{ left: 0, bottom: 0, background: "rgba(0,0,0, 0.4)", color: 'white', padding: 2, width: '30%', wordSpacing: 1.1 }}>
@@ -72,12 +73,17 @@ export default function Map() {
             Longitude: {parseFloat(viewport.longitude) > 0 ? "E" : "W"}{convertCoordToDegrees(viewport.longitude)} <br />
           </Typography>
         </div>
+
         <Marker latitude={city.lat} longitude={city.lng}>
           <Pin onClick={() => setViewport(viewState)}></Pin>
         </Marker>
-        <LayerControls />
+
+        <LayerControls sideEffect={() => setViewport}/>
+
       </ReactMapGL>
     </div>
   );
 }
+
+
 

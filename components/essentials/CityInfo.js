@@ -1,5 +1,5 @@
 import { Typography, Paper, Tabs, Tab, ButtonGroup, Button } from '@material-ui/core'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, memo } from 'react'
 import { useStyles } from '../Styles'
 import MonthAvgGraph from './Graph'
 import { ACTIONS, InfoContext } from '../../pages/app'
@@ -193,7 +193,7 @@ function WeatherInfo() {
     )
 }
 
-export default CityInfo
+export default memo(CityInfo)
 
 
 
