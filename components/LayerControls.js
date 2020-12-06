@@ -68,8 +68,9 @@ export default function LayerControls({ sideEffect }) {
                         ...clusterState, placeData: res
                     })
                     sideEffect()({
-                        latitude: lat, longitude: lng, zoom: 3
+                        latitude: lat, longitude: lng, zoom: 5
                     })
+
 
                 })
                 .finally(() => console.log("Place api called"))
@@ -130,7 +131,7 @@ export default function LayerControls({ sideEffect }) {
                     .filter(el => el._id !== city._id)
                     .map(place => {
                         const [lng, lat] = place.location.coordinates
-                        const { country, name, distance } = place
+                        const { _id, country, name, distance } = place
 
                         return (
                             <>
