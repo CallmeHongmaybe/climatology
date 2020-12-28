@@ -1,10 +1,11 @@
-import { Button, Grid, Paper, Typography } from "@material-ui/core"
+import { Grid, Paper, Typography, Fab, Tooltip } from "@material-ui/core"
 import { useClimateCardStyle } from '../Styles'
 import { useContext, useEffect, useState } from 'react'
 import { ACTIONS, InfoContext } from "../../pages/app";
 import Koppen from '../../library/koppen.json'
 import fetchClimData from "../../services/fetchClimData";
 import numeral from 'numeral'
+import { Info, Layers } from "@material-ui/icons";
 
 export default function ClimateCard() {
     const classes = useClimateCardStyle();
@@ -22,7 +23,6 @@ export default function ClimateCard() {
     const fetcher = async () => {
         if (city.climate) {
             setData({ sign: city.climate, isLoading: false })
-            console.log("Climate cache used")
         }
         else {
             try {
@@ -32,22 +32,19 @@ export default function ClimateCard() {
                     sign: fetchedData.climate,
                     isLoading: false
                 })
-
-                console.log("climate api called")
-
                 dispatch({
                     type: ACTIONS.UPDATE_CLIMATE,
                     payload: {
                         climate: fetchedData.climate,
-                        averages: fetchedData.averages
+                        averages: fetchedData.averages, 
                     }
                 })
-
             }
             catch (error) {
                 throw new Error("API sucked. Reason " + error)
             }
         }
+
     }
 
     useEffect(() => {
@@ -66,7 +63,7 @@ export default function ClimateCard() {
             el.sign === (new String(climate.sign || city.climate)).trim()
         )
 
-        return (
+        return (climate.sign !== 'NONE') && (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid container spacing={2}>
@@ -97,13 +94,21 @@ export default function ClimateCard() {
                             <p>Rank: </p>
                             <p>{numeral(getClimateData.rank).format("0o")} (out of 31)</p>
                         </div>
-                        <Button
-                            color="primary"
-                            onClick={() => dispatch({
+                        <div className={classes.spread}>
+                            <Fab variant="extended" color="primary" onClick={() => dispatch({
                                 type: ACTIONS.TOGGLE_LAYER
                             })}
-                        >{city.show_layer ? "Hide" : "See"} distribution of this climate</Button>
-                        <Button color="primary">Find closest location that suits this climate</Button>
+                                classes={classes.extendedIcon}
+                            >
+                                <Layers />
+                        See layers
+                    </Fab>
+                            <Tooltip title="References" aria-label="References">
+                                <Fab color="secondary" size="small">
+                                    <Info />
+                                </Fab>
+                            </Tooltip>
+                        </div>
                     </Grid>
                 </Paper>
             </div>

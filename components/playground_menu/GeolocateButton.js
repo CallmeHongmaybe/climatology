@@ -24,7 +24,6 @@ export default function GeolocateButton({ sideEffect }) {
                         fetch("../api/geolocate")
                             .then(res => res.json())
                             .then(res => {
-
                                 let payload = climDataTemplate(res)
 
                                 dispatch({

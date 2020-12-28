@@ -23,7 +23,7 @@ const units = '&units=metric';
 
 function CityInfo({ country, name, lat, lng }) {
 
-    console.log("CityInfo rendered")
+    // console.log("CityInfo rendered")
 
     const [value, setValue] = useState(TABS.CLIMATE);
 
@@ -114,7 +114,7 @@ function WeatherInfo() {
         setData({ isLoading: true })
         if (city.forecast) {
             setData({ content: city.forecast, isLoading: false })
-            console.log("Forecast cache used")
+            // console.log("Forecast cache used")
         }
         else {
             fetch(`${apiRoot}?lat=${city.lat}&lon=${city.lng}${apiKey}${units}`)
@@ -126,7 +126,7 @@ function WeatherInfo() {
                         payload: res
                     })
                 })
-                .finally(() => console.log("api called"))
+                // .finally(() => console.log("api called"))
                 .catch(error => {
                     throw new Error("API sucked. Reason " + error)
                 })

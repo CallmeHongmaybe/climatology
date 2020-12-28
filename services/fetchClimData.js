@@ -6,9 +6,9 @@ export default async function fetchClimData(country, name, lat, lng) {
 
 export function climDataTemplate(fetchedRes) {
     const [{ _id, country, name, location: { coordinates: [lng, lat] }, climate, distance, ...averages }] = fetchedRes
-    
+
     return {
-        _id, 
+        _id,
         country, name, lat, lng, climate,
         averages: (() => {
             let array = []
@@ -25,3 +25,4 @@ export function climDataTemplate(fetchedRes) {
         })()
     }
 }
+

@@ -59,6 +59,7 @@ export default function SearchBar() {
                                             lng: city.coords[0]
                                         }
                                     })
+                                    setSuggestion([])
                                 }}
                             >
                                 {city.name}, {city.country}

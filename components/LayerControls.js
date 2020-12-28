@@ -1,14 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { Layer, Source, Marker, Popup } from "react-map-gl";
 import { ACTIONS, InfoContext } from "../pages/app";
-import { useControlPanelStyle } from './Styles'
-import { Button, Switch, FormGroup, FormControlLabel, Typography, Tooltip } from "@material-ui/core";
+import { useControlPanelStyle, useBackDropStyles } from './Styles'
+import { Button, Switch, FormGroup, FormControlLabel, Typography, Tooltip, Backdrop, CircularProgress } from "@material-ui/core";
 import InfoIcon from '@material-ui/icons/Info';
 import Pin from "../public/pin";
 
 export default function LayerControls({ sideEffect }) {
-
-    const { city, dispatch } = useContext(InfoContext)
 
     const defaultLayerState = {
         layerData: null,
@@ -20,6 +18,12 @@ export default function LayerControls({ sideEffect }) {
         placeData: null,
         popUpInfo: null,
     }
+    const { city, dispatch } = useContext(InfoContext)
+    const [loading, setLoading] = useState(false)
+    const [layerState, setlayerState] = useState(defaultLayerState)
+    const [clusterState, setClusterState] = useState(defaultCluserState)
+    const controlPanelStyle = useControlPanelStyle()
+    const classes = useBackDropStyles()
 
     const handleLayer = () => setlayerState({
         ...layerState,
@@ -36,22 +40,19 @@ export default function LayerControls({ sideEffect }) {
         setClusterState({ ...clusterState, show: false })
     }
 
-    const controlPanelStyle = useControlPanelStyle()
-
-    const [layerState, setlayerState] = useState(defaultLayerState)
-    const [clusterState, setClusterState] = useState(defaultCluserState)
-
     // hook for getting geoJSON of the climate 
     useEffect(() => {
         if (!city.show_layer) return;
         else {
+            setLoading(true)
             fetch(`../api/getClimShapes?climate=${city.climate}`)
                 .then(res => res.json())
                 .then(res => {
                     setlayerState({
                         ...layerState, layerData: res
                     })
-                    console.log("Climate shape api called")
+                    // console.log("Climate shape api called")
+                    setLoading(false)
                 })
         }
     }, [city.show_layer])
@@ -59,7 +60,7 @@ export default function LayerControls({ sideEffect }) {
     useEffect(() => {
         if (clusterState.show) {
             fetch(`../api/geolocate?climate=${city.climate}&limit=5`)
-                .then(res => res.json())
+                .then(res => { setLoading(true); return res.json() })
                 .then(res => {
 
                     const [lng, lat] = res[0].location.coordinates
@@ -67,13 +68,14 @@ export default function LayerControls({ sideEffect }) {
                     setClusterState({
                         ...clusterState, placeData: res
                     })
+
+                    setLoading(false)
+
                     sideEffect()({
-                        latitude: lat, longitude: lng, zoom: 5
+                        latitude: lat, longitude: lng, zoom: 9
                     })
-
-
                 })
-                .finally(() => console.log("Place api called"))
+                // .finally(() => console.log("Place api called"))
                 .catch(ex => {
                     throw new Error(ex)
                 })
@@ -201,10 +203,10 @@ export default function LayerControls({ sideEffect }) {
                             color="primary"
                         />
                     }
-                    label={<div style={{display: 'flex', flexFlow: 'row'}}>
+                    label={<div style={{ display: 'flex', flexFlow: 'row' }}>
                         <Typography>Nearest places</Typography>
                         <Tooltip title="Nearest locations to you that matches the climate">
-                            <InfoIcon fontSize="small"/>
+                            <InfoIcon fontSize="small" />
                         </Tooltip>
                     </div>}
                 />
@@ -220,16 +222,14 @@ export default function LayerControls({ sideEffect }) {
             {ClimateLayer()}
             {LocationCluster()}
             {ButtonControls()}
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+                    : null
+            }
         </>
     ) : <></>
 
 }
-
-/*
-Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-    in Map (created by ForwardRef(LoadableComponent))
-    in ForwardRef(LoadableComponent) (at app.js:71)
-    in div (at app.js:62)
-    in App (at _app.js:4)
-    in MyApp
-*/

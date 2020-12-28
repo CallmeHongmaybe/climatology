@@ -51,7 +51,7 @@ export default function Map() {
       </Head>
       <ReactMapGL
         width='55vw'
-        height='100vh'
+        height='105vh'
         mapboxApiAccessToken={process.env.MAP_TOKEN}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         {...viewport}

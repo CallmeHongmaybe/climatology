@@ -1,5 +1,14 @@
 [
   {
+    "sign": "NONE",
+    "meaning": "Unknown",
+    "details": "The data may be unavailable for a number of reasons. Either it went completely out of our radar or simply there's no classification for it yet. You can report this by shooting me an email :)",
+    "area": "n/a",
+    "land cover": "n/a",
+    "rank": "n/a",
+    "color": "#23F212"
+  },
+  {
     "sign": "BWh",
     "meaning": "Hot desert climate",
     "details": "Self-explanatory. Places with such climates are so dry that even rain gets evaporated before reaching the ground",
@@ -47,7 +56,7 @@
   {
     "sign": "ET",
     "meaning": "Tundra climate",
-    "details": "No explanations for this yet.",
+    "details": "The tundra climate is a transitional climate between the Subarctic and Ice cap climates. It is a region of rolling to nearly level terrain almost entirely devoid of trees. Polar climates like the tundra are characterized by very cold temperatures and generally dry conditions. Temperatures never rise above 10o C (50oF) during the summer",
     "area": 9358325.009,
     "land cover": 5.944318967,
     "rank": 6,
@@ -236,7 +245,7 @@
   {
     "sign": "Dwd",
     "meaning": "Monsoon-influenced extremely cold subarctic climate",
-    "details": "just google Oymyakon",
+    "details": "No explanation for this type yet.",
     "area": 270244.7962,
     "land cover": 0.171656922,
     "rank": 27,
@@ -254,7 +263,7 @@
   {
     "sign": "Dsd",
     "meaning": "Mediterranean-influenced extremely cold subarctic climate",
-    "details": "No explanations for this yet.",
+    "details": "One of the three rarest climates available in the world. Exclusively found in the Far East region of Russia where winters could dip below -38ºC. The climate is believed to be dry in the summer but wetter in winters.",
     "area": 109793.42,
     "land cover": 0.069739735,
     "rank": 29,

@@ -6,10 +6,8 @@ const dev = process.env.NODE_ENV !== "production"
 function getCoordFromIP(req) {   
     let ipAddr = req.headers['x-forwarded-for'] || req_ip.getClientIp(req) || req.connection.remoteAddress || req.connection.socket.remoteAddress 
 
-    let {mylat, mylon} = process.env.coords 
-
     let geolookup = geoip.lookup(ipAddr)
-    var [lat, lng] = (dev) ? [mylon, mylat] : geolookup.ll // error is here 
+    var [lat, lng] = (dev) ? [process.env.mylat, process.env.mylon] : geolookup.ll // error is here 
 
     return [lat, lng]
 }

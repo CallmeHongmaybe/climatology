@@ -23,7 +23,7 @@ export default async (req, res) => {
             name: 1, 
             coords: "$location.coordinates"
         }
-    }, { $limit: 5 }]).exec()
+    }, { $limit: 8 }]).exec()
 
     res.json(foundDocs)
     res.end()

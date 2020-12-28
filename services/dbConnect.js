@@ -5,20 +5,20 @@ module.exports = function dbConnect() {
 
     if (db.readyState !== 1) {
         mongoose.connect(
-            process.env.MONGO_URL || "mongodb://localhost:27017/ghcnm",
+            process.env.MONGO_URL || 
+            "mongodb://localhost:27017/ghcnm?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             });
 
         db.on('error', () => {
-            console.log("Damn")
             db.close()
         });
 
-        db.on('open', () => {
-            console.log("connected to db " + db.name);
-        });
+        // db.on('open', () => {
+        //     console.log("connected to db " + db.name);
+        // });
     }
     else;
 }

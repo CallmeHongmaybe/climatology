@@ -15,7 +15,7 @@ export default function RandomButton({ sideEffect }) {
             icon={<Casino />}
             onClick={() => {
                 sideEffect()
-                fetch(`../api/getrandomloc`)
+                fetch(`../api/getrandomloc`) // try api/getrandomloc
                     .then(res => res.json())
                     .then(res => {
 
