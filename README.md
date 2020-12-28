@@ -31,8 +31,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-## Credits 
-
-catalog: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-climate extremes: Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-country by climate: Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+## Upcoming upgrades and new features 
+- Because there are still big cities that are still missing, we wanted to make a function which can allow users to just type in the location name, and the app will run a check whether the database already has that location and push the location to the database.
+- Future location specificity update: There are more than 10 cities in the world with the same name (Portland, Richmond, Fremont, etc.). In order to tell these cities apart, we'll be adding first admin division to each city in the near future. 
