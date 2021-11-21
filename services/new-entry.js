@@ -1,3 +1,5 @@
+// this only works in my local folder 
+
 const child_process = require('child_process')
 const spawn = child_process.spawnSync // saves about 300 ms
 const { months } = require("../services/query.middleware")
