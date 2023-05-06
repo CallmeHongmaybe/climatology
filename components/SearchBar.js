@@ -51,12 +51,11 @@ export default function SearchBar() {
                                 style={lineStyle}
                                 key={index}
                                 onClick={() => {
+                                    const [lng, lat] = city.location.coordinates
                                     dispatch({
                                         type: ACTIONS.GET_CITY_INFO,
                                         payload: {
-                                            ...city,
-                                            lat: city.coords[1],
-                                            lng: city.coords[0]
+                                            ...city, lat, lng
                                         }
                                     })
                                     setSuggestion([])

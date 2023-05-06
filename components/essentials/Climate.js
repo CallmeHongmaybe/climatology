@@ -98,7 +98,6 @@ export default function ClimateCard() {
                             <Fab variant="extended" color="primary" onClick={() => dispatch({
                                 type: ACTIONS.TOGGLE_LAYER
                             })}
-                                classes={classes.extendedIcon}
                             >
                                 <Layers />
                         See layers

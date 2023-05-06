@@ -56,6 +56,9 @@ export const useClimateCardStyle = makeStyles((theme) => ({
             margin: theme.spacing(1),
         },
     },
+    fabExtendedIcon: {
+        marginRight: theme.spacing(1),
+    }
 }));
 
 export const useControlPanelStyle = () => {

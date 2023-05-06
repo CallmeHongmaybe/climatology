@@ -6,22 +6,22 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Climatology.org</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Weather Advisor!
+          Welcome to Climatology!
         </h1>
         
-        <h2>A lightweight, minimalist app for climate stuff across the world</h2>
+        <h2>A lightweight, minimalist app about all things climate around the world</h2>
 
         <div className={styles.grid}>
           <Link href="/app">
             <a className={styles.card}>
               <h3>Find a location &rarr;</h3>
-              <p>If you already have a vacation spot or a city in mind, I would recommend using this tool. You can find climate info for any location in the search bar</p>
+              <p>A search engine of climate data for over 120,000 locations </p>
             </a>
           </Link>
 

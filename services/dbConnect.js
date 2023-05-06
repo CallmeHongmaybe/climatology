@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import { connection, connect } from 'mongoose';
 
-module.exports = function dbConnect() {
-    const db = mongoose.connection;
+export default function dbConnect() {
+    const db = connection;
 
     if (db.readyState !== 1) {
-        mongoose.connect(
+        connect(
             process.env.MONGO_URL || 
             "mongodb://localhost:27017/ghcnm?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
             {

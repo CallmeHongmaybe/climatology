@@ -10,25 +10,25 @@
     "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "geoip-lite": "^1.4.2",
-    "isomorphic-fetch": "^2.2.1",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "geoip-lite": "^1.4.7",
+    "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "local-storage": "^2.0.0",
-    "mongoose": "^5.10.7",
-    "next": "^9.5.4",
+    "mongoose": "^6.0.12",
+    "next": "^11.1.2",
     "numeral": "^2.0.6",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-map-gl": "^5.2.9",
-    "recharts": "^1.8.5",
-    "request-ip": "^2.1.3",
-    "suncalc": "^1.8.0",
-    "workerpool": "^6.0.3"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-map-gl": "^6.1.17",
+    "recharts": "^2.0.9",
+    "request-ip": "^2.2.0",
+    "suncalc": "^1.9.0",
+    "workerpool": "^6.4.0"
   },
   "devDependencies": {
-    "fast-csv": "^4.3.2",
-    "jsonfile": "^6.0.1"
+    "fast-csv": "^4.3.6",
+    "jsonfile": "^6.1.0"
   }
 }

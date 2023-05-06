@@ -1,7 +1,5 @@
-import { climDataTemplate } from './fetchClimData'
-
-const dbConnect = require('./dbConnect')
-const standardSchema = require('../models/schema')
+import dbConnect from './dbConnect'
+import standardSchema from '../models/schema'
 
 dbConnect()
 
@@ -9,7 +7,8 @@ export const TYPES = {
     GET_FAR_AWAY_SIMILAR_TEMP: "GET_FAR_AWAY_SIMILAR_TEMP",
     GET_LOC_CLIMATE: "GET_LOC_CLIMATE",
     GET_RANDOM_LOC: "GET_RANDOM_LOC",
-    GET_NEAREST_LOCS: "GET_NEAREST_LOCS"
+    GET_NEAREST_LOCS: "GET_NEAREST_LOCS", 
+    GET_AUTO_COMPLETE: "GET_AUTO_COMPLETE"
 }
 
 export const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -74,6 +73,20 @@ export default async function databaseQuery(req, type = TYPES.GET_LOC_CLIMATE) {
             return await standardSchema.aggregate([
                 { $sample: { size: 1 } }
             ]);
+        case TYPES.GET_AUTO_COMPLETE: 
+            const keyword = req.query.keyword || "";
+            const regex = new RegExp(keyword, "i"); // "i" for case-insensitive search
+            
+            const foundDocs = await standardSchema.find({
+                $or: [
+                    { name: { $regex: regex } },
+                    { country: { $regex: regex } },
+                ]})
+                .select("_id country name location.coordinates")
+                .limit(5)
+                .exec();
+
+            return foundDocs 
         default:
             return;
     }

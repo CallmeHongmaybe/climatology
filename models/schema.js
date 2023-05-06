@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-var schema = mongoose.Schema 
+import { Schema, models, model } from 'mongoose'
+var schema = Schema 
 // const {ObjectId} = mongoose.Schema.Types
 const MinMax = new schema({
     min: Number, 
@@ -34,5 +34,5 @@ const standardSchema = new schema({
 
 standardSchema.index({location: '2dsphere'})
 
-module.exports = mongoose.models.standardSchema || mongoose.model("standardSchema", standardSchema, 'new_monthly_avg')
+export default models.standardSchema || model("standardSchema", standardSchema, 'new_monthly_avg')
 
