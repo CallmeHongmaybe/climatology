@@ -24,6 +24,7 @@ Note that the site is currently optimized for web browsers only and may not disp
 
 ## Demos
 
+You can check out the [video walkthrough](https://youtu.be/yeHLRCVXFKk) or....
 Explore the app and its features by visiting the live demo: [Climatology Live Demo](https://your-live-demo-url.com)
 
 ## Contributing
