@@ -1,13 +1,39 @@
-Demo in YouTube: https://www.youtube.com/embed/yeHLRCVXFKk
+# Climatology
 
-# What's this project about ? 
+Climatology is a web app that provides comprehensive climate and weather data for over 120,000 locations around the world with a population of over 1,000. The app features three main sections: Climate, Monthly Averages, and Basic Forecast. It is built with Next.js and MongoDB and utilizes Python and R for data processing.
 
-Climatology is essentially a catalog of weather info across 120k locations. Inside you'll learn about the climate facts of each location and look up its current weather conditions. 
+## Installation
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Please refer to Contributing.md for the setup. 
+To set up the project locally, follow these steps:
 
-If you're interested in how the project is built, do pay a visit to my [blog post](https://denniskwan.vercel.app/posts/climatology). 
+1. Clone the repository: `git clone https://github.com/YourUsername/Climatology.git`
+2. Change to the project directory: `cd Climatology`
+3. Install dependencies: `npm install`
+4. Run the development server: `npm run dev`
+5. Open your browser and navigate to `http://localhost:3000`
 
-## Feature wishlist 
-- Because there are still big cities that are still missing, we wanted to make a function which can allow users to just type in the location name, and the app will run a check whether the database already has that location and push the location to the database.
-- Add a plot of daylight hours in the temperature section. Source: https://www.dataliftoff.com/plotting-hours-of-daylight-in-python-with-matplotlib/
+## Usage
+
+Use the search bar to find a location and explore its climate data. The app is divided into three main sections:
+
+1. **Climate:** Displays general climate information for the selected location.
+2. **Monthly Averages:** Shows average temperature and rainfall data in a detailed chart.
+3. **Basic Forecast:** Provides a simple weather forecast for the selected location.
+
+Note that the site is currently optimized for web browsers only and may not display correctly on mobile devices.
+
+## Demos
+
+Explore the app and its features by visiting the live demo: [Climatology Live Demo](https://your-live-demo-url.com)
+
+## Contributing
+
+We welcome contributions! If you have any suggestions, bug reports, or improvements, feel free to open an issue or submit a pull request on GitHub. Here are some areas where help is needed:
+
+- Improving the geolocation feature
+- Fixing issues with the "furthest location with similar temperatures" tab
+- Making the site responsive for mobile devices
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
